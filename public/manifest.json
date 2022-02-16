@@ -1,6 +1,6 @@
 {
   "short_name": "OwlParser",
-  "name": "Create React App Sample",
+  "name": "Webpage for visualising SRM-based owl files",
   "icons": [
     {
       "src": "favicon.ico",
