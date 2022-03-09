@@ -1,23 +1,69 @@
-.sidebar {
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+#sidebar {
   min-width: 30%;
-  max-width: fit-content;
+  max-width: 50%;
+  height: 100%;
   left: 0;
   top: 0;
+  bottom: 0;
   background-color: rgb(209, 242, 253);
   padding: 1rem 0.5rem 1rem;
+  overflow: auto;
+  box-sizing: border-box;
   /*flex-grow: 1;*/
 }
 
-.content {
+#content {
   padding: 1rem 0.5rem;
-  position: -webkit-sticky;
-  position: sticky;
+  height: 100%;
+  width: 100%;
   top: 0;
+  bottom: 0;
+  overflow: auto;
+  box-sizing: border-box;
+  flex-grow: 1;
 }
 
-.App {
+.wrapper {
   display: flex;
-  min-height: 100vh;
-  max-height: fit-content;
+  position: absolute;
+  top: 5rem;
+  bottom: 0;
   gap: 0.5rem;
+  width: 100%;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+  border-bottom: 1px solid black;
+}
+
+#owlLogo {
+  height: 3rem;
+  width: 3rem;
+  padding: 1rem;
+}
+
+#metadata > p {
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+}
+
+#metadata > h3 {
+  margin-bottom: 0.5rem;
+}
+
+.landingContainer {
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }

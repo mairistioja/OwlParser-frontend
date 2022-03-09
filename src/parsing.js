@@ -1,4 +1,4 @@
-import { srmClassOwlIds, srmRelationOwlIds } from "./srm.js";
+import { srmClassOwlIds } from "./srm.js";
 
 export function owlIdIsBlank(id) {
   return id.startsWith("_:");
@@ -176,7 +176,8 @@ export function parseOwlJsonLd(inputJsonLd) {
     for (const superClassId of subClassOf[id])
       subClasses[superClassId].push(id);
 
-  let classHierarchy = {}; // srmClass -> [{ontId, children: [x]} : x]
+  const srmClassIds = []; // [id]
+  let srmClassHierarchy = {}; // srmClass -> [{ontId, children: [x]} : x]
   let classDerivationChains = {}; // class -> [[srmClass, ...ancestorIds]]
   for (const classId in classes) {
     classDerivationChains[classId] = [];
@@ -185,12 +186,14 @@ export function parseOwlJsonLd(inputJsonLd) {
     const ontClass = srmClassOwlIds[srmClass];
     if (ontClass.length <= 0) continue; // Ignore unsupported
 
-    classHierarchy[srmClass] = [];
-    let parentArray = classHierarchy[srmClass];
+    srmClassIds.push(ontClass);
+    srmClassHierarchy[srmClass] = [];
+    let parentArray = srmClassHierarchy[srmClass];
     if (ontClass in subClasses) {
       // Only if present
       let toExamine = []; // [{parentArray, id, derivationChain: [srmClass, ...ancestorIds]}]
       for (const subClassId of subClasses[ontClass]) {
+        srmClassIds.push(subClassId);
         toExamine.push({
           parentArray: parentArray,
           id: subClassId,
@@ -201,6 +204,7 @@ export function parseOwlJsonLd(inputJsonLd) {
         const { parentArray, id, derivationChain } = toExamine.shift();
         const elem = { id, children: [] };
         for (const subClassId of subClasses[id]) {
+          srmClassIds.push(subClassId);
           toExamine.push({
             parentArray: elem.children,
             id: subClassId,
@@ -210,6 +214,64 @@ export function parseOwlJsonLd(inputJsonLd) {
         parentArray.push(elem);
         classDerivationChains[id].push(derivationChain);
       }
+    }
+  }
+
+  const topLevelNonSrmClassIds = []; // [id]
+  for (const classId in classes) {
+    // Ignore anonymous classes:
+    if (owlIdIsBlank(classId)) continue;
+
+    // Ignore if SRM class:
+    if (srmClassIds.includes(classId)) continue;
+
+    // Ignore if not top-level:
+    let isSubclass = false;
+    for (const superClassId of subClassOf[classId]) {
+      // TODO: Buggy check to ignore restrictions and such:
+      if (!owlIdIsBlank(superClassId)) {
+        isSubclass = true;
+        break;
+      }
+    }
+    if (isSubclass) continue;
+
+    // Ignore if contains SRM class as subclass:
+    /*
+    let hasSrmSubclass = false;
+    let subClassIdsToExamine = subClasses[classId];
+    while (subClassIdsToExamine.length > 0) {
+      const subClassId = subClassIdsToExamine.shift();
+      if (srmClassIds.includes(subClassId)) {
+        hasSrmSubclass = true;
+        break;
+      }
+    }
+    if (hasSrmSubclass) continue;*/
+
+    topLevelNonSrmClassIds.push(classId);
+  }
+  const otherClassHierarchy = []; // [{ontId, children: [x]} : x]
+  for (const classId of topLevelNonSrmClassIds) {
+    const toExamine = [
+      {
+        parentArray: otherClassHierarchy,
+        id: classId,
+        derivationChain: [],
+      },
+    ];
+    while (toExamine.length > 0) {
+      const { parentArray, id, derivationChain } = toExamine.shift();
+      const elem = { id, children: [] };
+      for (const subClassId of subClasses[id]) {
+        toExamine.push({
+          parentArray: elem.children,
+          id: subClassId,
+          derivationChain: [...derivationChain, id],
+        });
+      }
+      parentArray.push(elem);
+      classDerivationChains[id].push(derivationChain);
     }
   }
 
@@ -223,7 +285,7 @@ export function parseOwlJsonLd(inputJsonLd) {
     return r;
   }
 
-  let classRelations = {}; // id -> [{property, targetClass}]
+  let classRelations = {}; // id -> [{propertyId, targetClass}]
   for (const classId in classes) {
     if (owlIdIsBlank(classId)) continue;
     classRelations[classId] = [];
@@ -240,17 +302,23 @@ export function parseOwlJsonLd(inputJsonLd) {
         const targetClassId =
           restrictionSomeValuesFromIds[allSuperClasses[i]][0];
 
-        // Only add known relations:
-        for (const srmRelation in srmRelationOwlIds) {
-          // TODO: Sanity-check domain and range?
-          // TODO: handle inverse relations somehow
-          if (srmRelationOwlIds[srmRelation] === propertyId) {
-            classRelations[classId].push({
-              property: srmRelation,
-              targetClass: propertyClass(targetClassId),
-            });
+        /*
+          // Only add known relations:
+          for (const srmRelation in srmRelationOwlIds) {
+            // TODO: Sanity-check domain and range?
+            // TODO: handle inverse relations somehow
+            if (srmRelationOwlIds[srmRelation] === propertyId) {
+              classRelations[classId].push({
+                property: srmRelation,
+                targetClass: propertyClass(targetClassId),
+              });
+            }
           }
-        }
+        */
+        classRelations[classId].push({
+          propertyId: propertyId,
+          targetClass: propertyClass(targetClassId),
+        });
       }
       // "recurse" only for classes, not on restrictions:
       if (allSuperClasses[i] in subClassOf) {
@@ -295,7 +363,8 @@ export function parseOwlJsonLd(inputJsonLd) {
 
   return {
     metadata,
-    classHierarchy,
+    srmClassHierarchy,
+    otherClassHierarchy,
     classRelations,
     classUsedInRelations,
     classDerivationChains,

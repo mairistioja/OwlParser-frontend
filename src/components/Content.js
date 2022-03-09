@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { owlIdIsBlank } from "../parsing";
-import { srmClassNames, srmRelations } from "../srm.js";
+import { srmClassNames, srmRelations, srmRelationOwlIds } from "../srm.js";
+import { minimizeOwlId } from "../misc.js";
 import ClassLink from "./ClassLink";
 
-function renderSrmRelationItemHead(srmRelation) {
-  const r = srmRelations[srmRelation];
-  return (
-    <>
-      <strong>{r.name}</strong> ({srmClassNames[r.fromClass]} &#8594;{" "}
-      {srmClassNames[r.toClass]}):
-    </>
-  );
+function renderRelationItemHead(propertyId, info) {
+  for (const srmRelation in srmRelationOwlIds) {
+    if (propertyId === srmRelationOwlIds[srmRelation]) {
+      const r = srmRelations[srmRelation];
+      return (
+        <>
+          <strong>{r.name}</strong> ({srmClassNames[r.fromClass]} &#8594;{" "}
+          {srmClassNames[r.toClass]}):
+        </>
+      );
+    }
+  }
+  return <em>{minimizeOwlId(propertyId, info.metadata.id)}</em>;
 }
 
 function renderDerivationChain(chain, info) {
@@ -73,94 +79,85 @@ const Content = ({ info }) => {
   }, [hash]);
 
   return (
-    <div>
-      <div className="content">
-        {activeClassId.length === 0 ? (
-          "No class selected"
-        ) : (
-          <>
-            <div>
-              <h2>Derivations:</h2>
-              {info.classDerivationChains[activeClassId].map((chain, index) => (
-                <div key={index}>
-                  {["informationSystemAsset", "businessAsset"].includes(
-                    chain[0]
-                  )
-                    ? renderDerivationChain(
-                        ["asset", ...chain, activeClassId],
-                        info
-                      )
-                    : renderDerivationChain([...chain, activeClassId], info)}
-                </div>
-              ))}
-              {info.subClasses[activeClassId].length > 0 && (
-                <>
-                  <h3>Direct children:</h3>
-                  <ul>
-                    {info.subClasses[activeClassId].map((subclass, index) => (
-                      <li key={index}>
-                        <ClassLink
-                          classId={subclass}
-                          info={info}
-                          renderTypes={false}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-              <h2>Relations:</h2>
-              {info.classRelations[activeClassId].length <= 0 ? (
-                <p>No known relations</p>
-              ) : (
+    <div id="content">
+      {activeClassId.length === 0 ? (
+        "No class selected"
+      ) : (
+        <>
+          <div>
+            <h2>Derivations:</h2>
+            {info.classDerivationChains[activeClassId].map((chain, index) => (
+              <div key={index}>
+                {["informationSystemAsset", "businessAsset"].includes(chain[0])
+                  ? renderDerivationChain(
+                      ["asset", ...chain, activeClassId],
+                      info
+                    )
+                  : renderDerivationChain([...chain, activeClassId], info)}
+              </div>
+            ))}
+            {info.subClasses[activeClassId].length > 0 && (
+              <>
+                <h3>Direct children:</h3>
                 <ul>
-                  {info.classRelations[activeClassId].map((relation, index) => {
+                  {info.subClasses[activeClassId].map((subclass, index) => (
+                    <li key={index}>
+                      <ClassLink
+                        classId={subclass}
+                        info={info}
+                        renderTypes={false}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <h2>Relations:</h2>
+            {info.classRelations[activeClassId].length <= 0 ? (
+              <p>No known relations</p>
+            ) : (
+              <ul>
+                {info.classRelations[activeClassId].map((relation, index) => {
+                  return (
+                    <li key={index}>
+                      {renderRelationItemHead(relation.propertyId, info)}
+                      <ul>
+                        <li>{renderTargetClass(relation.targetClass, info)}</li>
+                      </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            <h2>Also used in:</h2>
+            {info.classUsedInRelations[activeClassId].length <= 0 ? (
+              <p>No known relations</p>
+            ) : (
+              <ul>
+                {info.classUsedInRelations[activeClassId].map(
+                  ({ classId, relation }, index) => {
                     return (
                       <li key={index}>
-                        {renderSrmRelationItemHead(relation.property)}
+                        <ClassLink classId={classId} info={info} />:
                         <ul>
                           <li>
-                            {renderTargetClass(relation.targetClass, info)}
+                            {renderRelationItemHead(relation.propertyId, info)}
+                            <ul>
+                              <li>
+                                {renderTargetClass(relation.targetClass, info)}
+                              </li>
+                            </ul>
                           </li>
                         </ul>
                       </li>
                     );
-                  })}
-                </ul>
-              )}
-              <h2>Also used in:</h2>
-              {info.classUsedInRelations[activeClassId].length <= 0 ? (
-                <p>No known relations</p>
-              ) : (
-                <ul>
-                  {info.classUsedInRelations[activeClassId].map(
-                    ({ classId, relation }, index) => {
-                      return (
-                        <li key={index}>
-                          <ClassLink classId={classId} info={info} />:
-                          <ul>
-                            <li>
-                              {renderSrmRelationItemHead(relation.property)}
-                              <ul>
-                                <li>
-                                  {renderTargetClass(
-                                    relation.targetClass,
-                                    info
-                                  )}
-                                </li>
-                              </ul>
-                            </li>
-                          </ul>
-                        </li>
-                      );
-                    }
-                  )}
-                </ul>
-              )}
-            </div>
-          </>
-        )}
-      </div>
+                  }
+                )}
+              </ul>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

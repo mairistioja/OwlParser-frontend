@@ -45,7 +45,7 @@ export default function NavigationTree({ info }) {
   }
   function subTree(name, key) {
     const itemArray =
-      key in info.classHierarchy ? info.classHierarchy[key] : [];
+      key in info.srmClassHierarchy ? info.srmClassHierarchy[key] : [];
     return renderTree({
       label: name,
       nodeId: `category:${key}`,
@@ -54,48 +54,61 @@ export default function NavigationTree({ info }) {
   }
 
   return (
-    <TreeView
-      className="sidebar"
-      defaultCollapseIcon={<ExpandMore />}
-      defaultExpandIcon={<ChevronRight />}
-      defaultExpanded={[
-        "category:risk_related",
-        "category:risk_treatment_related",
-        "category:asset_related",
-        "category:asset",
-      ]}
-      sx={{ padding: "1rem 0.5rem" }}
-    >
-      <StyledTreeItem
-        label="Risk-related concepts"
-        nodeId="category:risk_related"
+    <>
+      <TreeView
+        className="sidebar"
+        defaultCollapseIcon={<ExpandMore />}
+        defaultExpandIcon={<ChevronRight />}
+        defaultExpanded={[
+          "category:risk_related",
+          "category:risk_treatment_related",
+          "category:asset_related",
+          "category:asset",
+        ]}
+        sx={{ padding: "1rem 0.5rem" }}
       >
-        {subTree("Risk", "risk")}
-        {subTree("Event", "event")}
-        {subTree("Impact", "impact")}
-        {subTree("Threat", "threat")}
-        {subTree("Vulnerability", "vulnerability")}
-        {subTree("Threat agent", "threatAgent")}
-        {subTree("Attack method", "attackMethod")}
-      </StyledTreeItem>
-      <StyledTreeItem
-        label="Risk-treatment-related concepts"
-        nodeId="category:risk_treatment_related"
-      >
-        {subTree("Risk treatment", "riskTreatment")}
-        {subTree("Security requirement", "securityRequirement")}
-        {subTree("Control", "control")}
-      </StyledTreeItem>
-      <StyledTreeItem
-        label="Asset-related concepts"
-        nodeId="category:asset_related"
-      >
-        {subTree("Security Criterion", "securityCriterion")}
-        <StyledTreeItem label="Asset" nodeId="category:asset">
-          {subTree("IS asset", "informationSystemAsset")}
-          {subTree("Business asset", "businessAsset")}
+        <StyledTreeItem
+          label="Risk-related concepts"
+          nodeId="category:risk_related"
+        >
+          {subTree("Risk", "risk")}
+          {subTree("Event", "event")}
+          {subTree("Impact", "impact")}
+          {subTree("Threat", "threat")}
+          {subTree("Vulnerability", "vulnerability")}
+          {subTree("Threat agent", "threatAgent")}
+          {subTree("Attack method", "attackMethod")}
         </StyledTreeItem>
-      </StyledTreeItem>
-    </TreeView>
+        <StyledTreeItem
+          label="Risk-treatment-related concepts"
+          nodeId="category:risk_treatment_related"
+        >
+          {subTree("Risk treatment", "riskTreatment")}
+          {subTree("Security requirement", "securityRequirement")}
+          {subTree("Control", "control")}
+        </StyledTreeItem>
+        <StyledTreeItem
+          label="Asset-related concepts"
+          nodeId="category:asset_related"
+        >
+          {subTree("Security Criterion", "securityCriterion")}
+          <StyledTreeItem label="Asset" nodeId="category:asset">
+            {subTree("IS asset", "informationSystemAsset")}
+            {subTree("Business asset", "businessAsset")}
+          </StyledTreeItem>
+        </StyledTreeItem>
+      </TreeView>
+      <hr></hr>
+      <TreeView>
+        <StyledTreeItem
+          label={
+            "Other classes" + numItemsText(info.otherClassHierarchy.length)
+          }
+          nodeId="category:other"
+        >
+          {info.otherClassHierarchy.map((child) => renderTree(child))}
+        </StyledTreeItem>
+      </TreeView>
+    </>
   );
 }

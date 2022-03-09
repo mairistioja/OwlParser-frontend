@@ -77,6 +77,9 @@ export const srmRelations = {
   securityCriterionConstraintOfBusinessAsset: srmRelation(
     "securityCriterion|Constraint of|businessAsset|unknown|unknown"
   ),
+  businessAssetHasConstraintSecurityCriterion: srmRelation(
+    "businessAsset|Has constraint|securityCriterion|unknown|unknown"
+  ),
   informationSystemAssetSupportsBusinessAsset: srmRelation(
     "informationSystemAsset|Supports|businessAsset|0..*|1..*"
   ),
@@ -98,7 +101,7 @@ export const srmClassOwlIds = {
   // Asset related:
   securityCriterion:
     "https://mmisw.org/ont/~mubashar/HealthOnt#SecurityCriteria",
-  // asset: "https://mmisw.org/ont/~mubashar/HealthOnt#Asset", // not useful
+  asset: "https://mmisw.org/ont/~mubashar/HealthOnt#Asset",
   informationSystemAsset:
     "https://mmisw.org/ont/~mubashar/HealthOnt#SystemAsset",
   businessAsset: "https://mmisw.org/ont/~mubashar/HealthOnt#BusinessAsset",
@@ -109,7 +112,8 @@ export const srmRelationOwlIds = {
   // Risk treatment related:
   riskTreatmentLeadsToSecurityRequirement: "", // 1..* -> 0..*
   riskTreatmentDecisionToTreatRisk: "", // 1..* -> 1..*
-  securityRequirementMitigatesRisk: "", // 0..1 -> 1..*
+  securityRequirementMitigatesRisk:
+    "https://mmisw.org/ont/~mubashar/HealthOnt#mitigates", // 0..1 -> 1..* Countermeasure mitigates Vulnerability!?!? TODO
   controlImplementsSecurityRequirement: "", // 1..* -> 1..*
   // Risk related:
   riskSignificanceAssessedBySecurityCriterion: "", // 0..1 -> 1..*
@@ -132,11 +136,12 @@ export const srmRelationOwlIds = {
   impactHarmsAsset: "", // 0..* -> 2..*
   // Asset related:
   securityCriterionConstraintOfBusinessAsset:
-    "https://mmisw.org/ont/~mubashar/HealthOnt#constraintOf", // ??? TODO inverse "https://mmisw.org/ont/~mubashar/HealthOnt#hasConstraint"
+    "https://mmisw.org/ont/~mubashar/HealthOnt#constraintOf", // HARD-CODED inverse of the below:
+  businessAssetHasConstraintSecurityCriterion:
+    "https://mmisw.org/ont/~mubashar/HealthOnt#hasConstraint", // HARD-CODED inverse of the above ^
   informationSystemAssetSupportsBusinessAsset:
     "https://mmisw.org/ont/~mubashar/HealthOnt#supports", // 0..* -> 1..*
 
-  // "https://mmisw.org/ont/~mubashar/HealthOnt#mitigates" Countermeasure mitigates Vulnerability!?!? TODO
   // "https://mmisw.org/ont/~mubashar/HealthOnt#harms" Asset harms IS Asset and/or Business Asset !?!? TODO
   // "https://mmisw.org/ont/~mubashar/HealthOnt#negates" Vulnerability negates Security Criterion !?!? TODO
 };
