@@ -1,24 +1,75 @@
 import "./App.css";
-import Sidebar from "./components/Sidebar";
-import Content from "./components/Content";
+
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import BrowsePage from "./Browse";
+import LandingPage from "./LandingPage";
 import Header from "./components/Header";
-import data from "./assets/data.json";
 
-import { BrowserRouter } from "react-router-dom";
-import { parseOwlJsonLd } from "./parsing.js";
+const AppContainer = ({ model }) => {
+  return (
+    <>
+      <Header model={model} />
+      <Outlet />
+    </>
+  );
+};
 
-const info = parseOwlJsonLd(data);
+// Copied from https://usehooks.com/useLocalStorage/
+function useLocalStorage(key, initialValue) {
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState(() => {
+    if (typeof window === "undefined") {
+      return initialValue;
+    }
 
-function App() {
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
+    }
+  });
+
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
+const App = () => {
+  const [model, setModel] = useLocalStorage("model", null);
   return (
     <BrowserRouter>
-      <Header info={info}></Header>
-      <div className="wrapper">
-        <Sidebar info={info} />
-        <Content info={info} />
-      </div>
+      <Routes>
+        <Route path="/" element={<AppContainer model={model} />}>
+          <Route index element={<LandingPage setModel={setModel} />} />
+          <Route path="browse" element={<BrowsePage model={model} />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

@@ -5,7 +5,7 @@ import { srmClassNames, srmRelations, srmRelationOwlIds } from "../srm.js";
 import { minimizeOwlId } from "../misc.js";
 import ClassLink from "./ClassLink";
 
-function renderRelationItemHead(propertyId, info) {
+function renderRelationItemHead(propertyId, model) {
   for (const srmRelation in srmRelationOwlIds) {
     if (propertyId === srmRelationOwlIds[srmRelation]) {
       const r = srmRelations[srmRelation];
@@ -17,10 +17,10 @@ function renderRelationItemHead(propertyId, info) {
       );
     }
   }
-  return <em>{minimizeOwlId(propertyId, info.metadata.id)}</em>;
+  return <em>{minimizeOwlId(propertyId, model.metadata.id)}</em>;
 }
 
-function renderDerivationChain(chain, info) {
+function renderDerivationChain(chain, model) {
   return (
     <ul>
       <li>
@@ -29,17 +29,17 @@ function renderDerivationChain(chain, info) {
         ) : (
           <ClassLink
             classId={chain[0]}
-            info={info}
+            model={model}
             renderTypes={chain.length > 1}
           />
         )}
-        {chain.length > 1 && renderDerivationChain(chain.slice(1), info)}
+        {chain.length > 1 && renderDerivationChain(chain.slice(1), model)}
       </li>
     </ul>
   );
 }
 
-function renderTargetClass(target, info) {
+function renderTargetClass(target, model) {
   if (owlIdIsBlank(target.classId)) {
     function renderList(name, list) {
       console.assert(list.length > 0);
@@ -48,7 +48,7 @@ function renderTargetClass(target, info) {
           <em>{name}</em>
           <ul>
             {list.map((sub, index) => (
-              <li key={index}>{renderTargetClass(sub, info)}</li>
+              <li key={index}>{renderTargetClass(sub, model)}</li>
             ))}
           </ul>
         </>
@@ -63,17 +63,17 @@ function renderTargetClass(target, info) {
       return renderList("Complement of:", target.complementOf);
     }
   }
-  return <ClassLink classId={target.classId} info={info} />;
+  return <ClassLink classId={target.classId} model={model} />;
 }
 
-const Content = ({ info }) => {
+const Content = ({ model }) => {
   const { hash } = useLocation();
   const [activeClassId, setActiveClassId] = useState("");
 
   useEffect(() => {
     if (hash.startsWith("#id:")) {
       setActiveClassId(hash.slice(4));
-    } else {
+    } else if (hash.length > 0) {
       console.warn("Unsupported URL fragment!");
     }
   }, [hash]);
@@ -86,25 +86,25 @@ const Content = ({ info }) => {
         <>
           <div>
             <h2>Derivations:</h2>
-            {info.classDerivationChains[activeClassId].map((chain, index) => (
+            {model.classDerivationChains[activeClassId].map((chain, index) => (
               <div key={index}>
                 {["informationSystemAsset", "businessAsset"].includes(chain[0])
                   ? renderDerivationChain(
                       ["asset", ...chain, activeClassId],
-                      info
+                      model
                     )
-                  : renderDerivationChain([...chain, activeClassId], info)}
+                  : renderDerivationChain([...chain, activeClassId], model)}
               </div>
             ))}
-            {info.subClasses[activeClassId].length > 0 && (
+            {model.subClasses[activeClassId].length > 0 && (
               <>
                 <h3>Direct children:</h3>
                 <ul>
-                  {info.subClasses[activeClassId].map((subclass, index) => (
+                  {model.subClasses[activeClassId].map((subclass, index) => (
                     <li key={index}>
                       <ClassLink
                         classId={subclass}
-                        info={info}
+                        model={model}
                         renderTypes={false}
                       />
                     </li>
@@ -113,16 +113,18 @@ const Content = ({ info }) => {
               </>
             )}
             <h2>Relations:</h2>
-            {info.classRelations[activeClassId].length <= 0 ? (
+            {model.classRelations[activeClassId].length <= 0 ? (
               <p>No known relations</p>
             ) : (
               <ul>
-                {info.classRelations[activeClassId].map((relation, index) => {
+                {model.classRelations[activeClassId].map((relation, index) => {
                   return (
                     <li key={index}>
-                      {renderRelationItemHead(relation.propertyId, info)}
+                      {renderRelationItemHead(relation.propertyId, model)}
                       <ul>
-                        <li>{renderTargetClass(relation.targetClass, info)}</li>
+                        <li>
+                          {renderTargetClass(relation.targetClass, model)}
+                        </li>
                       </ul>
                     </li>
                   );
@@ -130,21 +132,21 @@ const Content = ({ info }) => {
               </ul>
             )}
             <h2>Also used in:</h2>
-            {info.classUsedInRelations[activeClassId].length <= 0 ? (
+            {model.classUsedInRelations[activeClassId].length <= 0 ? (
               <p>No known relations</p>
             ) : (
               <ul>
-                {info.classUsedInRelations[activeClassId].map(
+                {model.classUsedInRelations[activeClassId].map(
                   ({ classId, relation }, index) => {
                     return (
                       <li key={index}>
-                        <ClassLink classId={classId} info={info} />:
+                        <ClassLink classId={classId} model={model} />:
                         <ul>
                           <li>
-                            {renderRelationItemHead(relation.propertyId, info)}
+                            {renderRelationItemHead(relation.propertyId, model)}
                             <ul>
                               <li>
-                                {renderTargetClass(relation.targetClass, info)}
+                                {renderTargetClass(relation.targetClass, model)}
                               </li>
                             </ul>
                           </li>

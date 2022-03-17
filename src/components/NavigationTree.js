@@ -12,7 +12,7 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-export default function NavigationTree({ info }) {
+export default function NavigationTree({ model }) {
   function numItemsText(numItems) {
     return numItems <= 0 ? "" : ` (${numItems})`;
   }
@@ -22,7 +22,7 @@ export default function NavigationTree({ info }) {
       props = {
         label: (
           <>
-            <IdLink id={node.id} ontologyId={info.metadata.id} />
+            <IdLink id={node.id} ontologyId={model.metadata.id} />
             {numItemsText(node.children.length)}
           </>
         ),
@@ -45,7 +45,7 @@ export default function NavigationTree({ info }) {
   }
   function subTree(name, key) {
     const itemArray =
-      key in info.srmClassHierarchy ? info.srmClassHierarchy[key] : [];
+      key in model.srmClassHierarchy ? model.srmClassHierarchy[key] : [];
     return renderTree({
       label: name,
       nodeId: `category:${key}`,
@@ -102,11 +102,11 @@ export default function NavigationTree({ info }) {
       <TreeView>
         <StyledTreeItem
           label={
-            "Other classes" + numItemsText(info.otherClassHierarchy.length)
+            "Other classes" + numItemsText(model.otherClassHierarchy.length)
           }
           nodeId="category:other"
         >
-          {info.otherClassHierarchy.map((child) => renderTree(child))}
+          {model.otherClassHierarchy.map((child) => renderTree(child))}
         </StyledTreeItem>
       </TreeView>
     </>

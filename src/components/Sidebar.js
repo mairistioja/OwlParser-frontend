@@ -1,10 +1,10 @@
 import React from "react";
 import NavigationTree from "./NavigationTree";
 
-const Sidebar = ({ info }) => {
+const Sidebar = ({ model }) => {
   return (
     <div id="sidebar">
-      <NavigationTree info={info} />
+      <NavigationTree model={model} />
     </div>
   );
 };
