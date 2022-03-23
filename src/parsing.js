@@ -82,6 +82,8 @@ export function parseTriples(triples) {
   const intersectionOfList = {}; // id -> id
   const listFirstIds = {}; // id -> id
   const listRestIds = {}; // id -> id?
+  const traditionalAppIds = []; // [id]
+  const blockchainAppIds = []; // [id]
   for (const [object, predicate, subject] of triples) {
     if (predicate === "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
       console.assert(
@@ -168,6 +170,14 @@ export function parseTriples(triples) {
     } else if (predicate === "http://www.w3.org/2002/07/owl#versionInfo") {
       if (subject === metadata.id) {
         metadata.versionInfo = object;
+      }
+    } else if (predicate === "http://purl.org/dc/elements/1.1/domain") {
+      if (object === "BlockchainApplication") {
+        blockchainAppIds.push(subject);
+      } else if (object === "TraditionalApplication") {
+        traditionalAppIds.push(subject);
+      } else {
+        console.debug("Unhandled dc:domain", object, subject);
       }
     } else {
       console.debug("unhandled triple", object, predicate, subject);
@@ -367,5 +377,7 @@ export function parseTriples(triples) {
     classUsedInRelations,
     classDerivationChains,
     subClasses,
+    blockchainAppIds,
+    traditionalAppIds,
   };
 }

@@ -102,7 +102,7 @@ export default function NavigationTree({ model }) {
       <TreeView>
         <StyledTreeItem
           label={
-            "Other classes" + numItemsText(model.otherClassHierarchy.length)
+            "Extra Details" + numItemsText(model.otherClassHierarchy.length)
           }
           nodeId="category:other"
         >

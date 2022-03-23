@@ -5,6 +5,38 @@ import { srmClassNames, srmRelations, srmRelationOwlIds } from "../srm.js";
 import { minimizeOwlId } from "../misc.js";
 import ClassLink from "./ClassLink";
 
+const classHierachyContains = (classId, hierarchyArray) => {
+  const toExamine = [...hierarchyArray];
+  while (toExamine.length > 0) {
+    const first = toExamine.shift();
+    if (first.id === classId) return true;
+    toExamine.push(...first.children);
+  }
+  return false;
+};
+
+const isThreat = (classId, model) =>
+  classHierachyContains(classId, model.srmClassHierarchy["threat"]);
+
+const isVulnerability = (classId, model) =>
+  classHierachyContains(classId, model.srmClassHierarchy["vulnerability"]);
+
+const vulnerabilityMitigations = (classId, model) => {
+  const r = [];
+  const mitigatesPropertyId =
+    srmRelationOwlIds["securityRequirementMitigatesRisk"];
+  console.log("classId", classId);
+  console.log("mitigatesPropertyId", mitigatesPropertyId);
+  console.log(
+    "model.classUsedInRelations[classId]",
+    model.classUsedInRelations[classId]
+  );
+  for (const relation of model.classUsedInRelations[classId])
+    if (relation.relation.propertyId === mitigatesPropertyId)
+      r.push(relation.classId);
+  return r;
+};
+
 function renderRelationItemHead(propertyId, model) {
   for (const srmRelation in srmRelationOwlIds) {
     if (propertyId === srmRelationOwlIds[srmRelation]) {
@@ -39,7 +71,7 @@ function renderDerivationChain(chain, model) {
   );
 }
 
-function renderTargetClass(target, model) {
+function renderTargetClass(target, model, expandVulnerabilityMitigations) {
   if (owlIdIsBlank(target.classId)) {
     function renderList(name, list) {
       console.assert(list.length > 0);
@@ -48,7 +80,9 @@ function renderTargetClass(target, model) {
           <em>{name}</em>
           <ul>
             {list.map((sub, index) => (
-              <li key={index}>{renderTargetClass(sub, model)}</li>
+              <li key={index}>
+                {renderTargetClass(sub, model, expandVulnerabilityMitigations)}
+              </li>
             ))}
           </ul>
         </>
@@ -63,7 +97,30 @@ function renderTargetClass(target, model) {
       return renderList("Complement of:", target.complementOf);
     }
   }
-  return <ClassLink classId={target.classId} model={model} />;
+  const classLink = <ClassLink classId={target.classId} model={model} />;
+  if (
+    expandVulnerabilityMitigations &&
+    isVulnerability(target.classId, model)
+  ) {
+    return (
+      <>
+        {classLink}
+        <ul>
+          <li>Mitigated by:</li>
+          <ul>
+            {vulnerabilityMitigations(target.classId, model).map(
+              (id, index) => (
+                <li key={index}>
+                  <ClassLink classId={id} model={model} />
+                </li>
+              )
+            )}
+          </ul>
+        </ul>
+      </>
+    );
+  }
+  return classLink;
 }
 
 const Content = ({ model }) => {
@@ -123,7 +180,11 @@ const Content = ({ model }) => {
                       {renderRelationItemHead(relation.propertyId, model)}
                       <ul>
                         <li>
-                          {renderTargetClass(relation.targetClass, model)}
+                          {renderTargetClass(
+                            relation.targetClass,
+                            model,
+                            isThreat(activeClassId, model)
+                          )}
                         </li>
                       </ul>
                     </li>
@@ -146,7 +207,11 @@ const Content = ({ model }) => {
                             {renderRelationItemHead(relation.propertyId, model)}
                             <ul>
                               <li>
-                                {renderTargetClass(relation.targetClass, model)}
+                                {renderTargetClass(
+                                  relation.targetClass,
+                                  model,
+                                  isThreat(activeClassId, model)
+                                )}
                               </li>
                             </ul>
                           </li>
