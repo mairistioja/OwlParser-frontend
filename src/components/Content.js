@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { owlIdIsBlank } from "../parsing";
-import { srmClassNames, srmRelations, srmRelationOwlIds } from "../srm.js";
-import { minimizeOwlId } from "../misc.js";
+import {
+  srmClassNames,
+  srmClassOwlIds,
+  srmRelations,
+  srmRelationOwlIds,
+} from "../srm.js";
+import { minimizeOwlId, srmClassText } from "../misc.js";
 import ClassLink from "./ClassLink";
+import { Tooltip } from "@mui/material";
 
 const classHierachyContains = (classId, hierarchyArray) => {
   const toExamine = [...hierarchyArray];
@@ -43,13 +49,19 @@ function renderRelationItemHead(propertyId, model) {
       const r = srmRelations[srmRelation];
       return (
         <>
-          <strong>{r.name}</strong> ({srmClassNames[r.fromClass]} &#8594;{" "}
-          {srmClassNames[r.toClass]}):
+          <Tooltip title={propertyId}>
+            <strong>{r.name}</strong>
+          </Tooltip>{" "}
+          ({srmClassText(r.fromClass)} &#8594; {srmClassText(r.toClass)}):
         </>
       );
     }
   }
-  return <em>{minimizeOwlId(propertyId, model.metadata.id)}</em>;
+  return (
+    <Tooltip title={propertyId}>
+      <em>{minimizeOwlId(propertyId, model)}</em>
+    </Tooltip>
+  );
 }
 
 function renderDerivationChain(chain, model) {
@@ -57,7 +69,9 @@ function renderDerivationChain(chain, model) {
     <ul>
       <li>
         {chain[0] in srmClassNames ? (
-          <strong>{srmClassNames[chain[0]]}</strong>
+          <Tooltip title={srmClassOwlIds[chain[0]]}>
+            <strong>{srmClassNames[chain[0]]}</strong>
+          </Tooltip>
         ) : (
           <ClassLink
             classId={chain[0]}
@@ -222,6 +236,26 @@ const Content = ({ model }) => {
                 )}
               </ul>
             )}
+            <h2>Other</h2>
+            {activeClassId in model.unhandledTriples &&
+            model.unhandledTriples[activeClassId].length > 0
+              ? model.unhandledTriples[activeClassId].map((elem, index) => (
+                  <ul key={index}>
+                    <li>
+                      {elem.predicateId}
+                      <ul>
+                        <li>
+                          {elem.objectId in model.subClasses ? (
+                            <ClassLink classId={elem.objectId} model={model} />
+                          ) : (
+                            elem.objectId
+                          )}
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                ))
+              : "Nothing to show here"}
           </div>
         </>
       )}

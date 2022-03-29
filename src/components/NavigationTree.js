@@ -22,7 +22,7 @@ export default function NavigationTree({ model }) {
       props = {
         label: (
           <>
-            <IdLink id={node.id} ontologyId={model.metadata.id} />
+            <IdLink id={node.id} model={model} />
             {numItemsText(node.children.length)}
           </>
         ),
@@ -99,7 +99,10 @@ export default function NavigationTree({ model }) {
         </StyledTreeItem>
       </TreeView>
       <hr></hr>
-      <TreeView>
+      <TreeView
+        defaultCollapseIcon={<ExpandMore />}
+        defaultExpandIcon={<ChevronRight />}
+      >
         <StyledTreeItem
           label={
             "Extra Details" + numItemsText(model.otherClassHierarchy.length)

@@ -1,11 +1,36 @@
 import { srmClassOwlIds } from "./srm.js";
 
+/**
+ * Returns if the class is an anonymous class
+ * @param {string} id
+ * @return {boolean}
+ */
 export function owlIdIsBlank(id) {
   return id.startsWith("_:");
 }
 
+/**
+ * Parses triples from RdfXMLParser stream
+ * @param {Object[]} triples of object, predicate and subject
+ * @returns {Object} parsedTriples
+ * @returns {{id: string, creator: string, title: string, comment: string, versionIRI: string, versionInfo: string}} parsedTriples.metadata
+ * @returns {Object} parsedTriples.srmClassHierarchy, srmClass -> [{ontId, children: [x]} : x]
+ * @returns {Object[]} parsedTriples.otherClassHierarchy, [{ontId, children: [x]} : x]
+ * @returns {Object} parsedTriples.classRelations, id -> [{propertyId, targetClass}]
+ * @returns {Object} parsedTriples.classUsedInRelations, targetClassId -> [{classId, relation}]
+ * @returns {Object} parsedTriples.classDerivationChains, class -> [[srmClass, ...ancestorIds]]
+ * @returns {Object} parsedTriples.subClasses, id -> [id]
+ * @returns {string[]} parsedTriples.blockchainAppIds
+ * @returns {string[]} parsedTriples.traditionalAppIds
+ */
 export function parseTriples(triples) {
+  /**
+   * Returns a name for a triple element
+   * @param {Object} node
+   * @returns {string}
+   */
   function nodeName(node) {
+    // Data model: http://rdf.js.org/data-model-spec/
     console.assert(typeof node.termType === "string");
     console.assert(typeof node.value === "string");
     if (node.value.startsWith("_:") || node.termType !== "BlankNode") {
@@ -84,6 +109,7 @@ export function parseTriples(triples) {
   const listRestIds = {}; // id -> id?
   const traditionalAppIds = []; // [id]
   const blockchainAppIds = []; // [id]
+  const unhandledTriples = {}; // subjectId -> [{predicateId, objectId}]
   for (const [object, predicate, subject] of triples) {
     if (predicate === "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
       console.assert(
@@ -102,7 +128,9 @@ export function parseTriples(triples) {
       } else {
         subClasses[object] = [subject];
       }
-    } else if (predicate === "http://www.w3.org/2002/07/owl#onProperty") {
+      continue;
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#onProperty") {
       console.assert(propertyIds.includes(object));
       console.assert(
         classIds.includes(subject) || restrictionIds.includes(subject)
@@ -112,7 +140,9 @@ export function parseTriples(triples) {
       } else {
         restrictionOnPropertyIds[subject] = [object];
       }
-    } else if (predicate === "http://www.w3.org/2002/07/owl#someValuesFrom") {
+      continue;
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#someValuesFrom") {
       console.assert(
         classIds.includes(subject) || restrictionIds.includes(subject)
       );
@@ -124,63 +154,91 @@ export function parseTriples(triples) {
       } else {
         restrictionSomeValuesFromIds[subject] = [object];
       }
-    } else if (predicate === "http://www.w3.org/2002/07/owl#unionOf") {
+      continue;
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#unionOf") {
       console.assert(!(subject in unionOfList));
       unionOfList[subject] = object;
-    } else if (predicate === "http://www.w3.org/2002/07/owl#intersectionOf") {
+      continue;
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#intersectionOf") {
       console.assert(!(subject in intersectionOfList));
       intersectionOfList[subject] = object;
-    } else if (
-      predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#first"
-    ) {
+      continue;
+    }
+    if (predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#first") {
       listFirstIds[subject] = object;
-    } else if (
-      predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"
-    ) {
+      continue;
+    }
+    if (predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest") {
       if (object !== "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil")
         listRestIds[subject] = object;
-    } else if (predicate === "http://www.w3.org/2000/01/rdf-schema#range") {
-      /// TODO ignore?
-    } else if (predicate === "http://www.w3.org/2000/01/rdf-schema#domain") {
-      /// TODO ignore?
-    } else if (predicate === "http://www.w3.org/2002/07/owl#inverseOf") {
-      /// TODO ignore?
-    } else if (predicate === "http://www.w3.org/2002/07/owl#disjointWith") {
-      /// TODO ignore?
-    } else if (predicate === "http://purl.org/dc/elements/1.1/creator") {
+      continue;
+    }
+    if (predicate === "http://www.w3.org/2000/01/rdf-schema#range") {
+      continue; /// TODO ignore?
+    }
+    if (predicate === "http://www.w3.org/2000/01/rdf-schema#domain") {
+      continue; /// TODO ignore?
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#inverseOf") {
+      continue; /// TODO ignore?
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#disjointWith") {
+      continue; /// TODO ignore?
+    }
+    if (predicate === "http://purl.org/dc/elements/1.1/creator") {
       if (subject === metadata.id) {
         metadata.creator = object;
+        continue;
       }
-    } else if (predicate === "http://purl.org/dc/elements/1.1/title") {
+    }
+    if (predicate === "http://purl.org/dc/elements/1.1/title") {
       if (subject === metadata.id) {
         metadata.title = object;
+        continue;
       }
-    } else if (predicate === "http://www.w3.org/2000/01/rdf-schema#comment") {
+    }
+    if (predicate === "http://www.w3.org/2000/01/rdf-schema#comment") {
       if (subject === metadata.id) {
         metadata.comment = object;
+        continue;
       }
-    } else if (predicate === "http://www.w3.org/2000/01/rdf-schema#label") {
+    }
+    if (predicate === "http://www.w3.org/2000/01/rdf-schema#label") {
       if (subject === metadata.id) {
         metadata.label = object;
+        continue;
       }
-    } else if (predicate === "http://www.w3.org/2002/07/owl#versionIRI") {
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#versionIRI") {
       if (subject === metadata.id) {
         metadata.versionIRI = object;
+        continue;
       }
-    } else if (predicate === "http://www.w3.org/2002/07/owl#versionInfo") {
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#versionInfo") {
       if (subject === metadata.id) {
         metadata.versionInfo = object;
+        continue;
       }
-    } else if (predicate === "http://purl.org/dc/elements/1.1/domain") {
+    }
+    if (predicate === "http://purl.org/dc/elements/1.1/domain") {
       if (object === "BlockchainApplication") {
         blockchainAppIds.push(subject);
-      } else if (object === "TraditionalApplication") {
-        traditionalAppIds.push(subject);
-      } else {
-        console.debug("Unhandled dc:domain", object, subject);
+        continue;
       }
+      if (object === "TraditionalApplication") {
+        traditionalAppIds.push(subject);
+        continue;
+      }
+    }
+    console.debug("unhandled triple", object, predicate, subject);
+    const pred = { predicateId: predicate, objectId: object };
+    if (subject in unhandledTriples) {
+      unhandledTriples[subject].push(pred);
     } else {
-      console.debug("unhandled triple", object, predicate, subject);
+      unhandledTriples[subject] = [pred];
     }
   }
 
@@ -379,5 +437,6 @@ export function parseTriples(triples) {
     subClasses,
     blockchainAppIds,
     traditionalAppIds,
+    unhandledTriples,
   };
 }

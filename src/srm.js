@@ -18,6 +18,11 @@ export const srmClassNames = {
   businessAsset: "Business asset",
 };
 
+/**
+ * Returns relation parameters from srmRelations constants
+ * @param {string} str
+ * @return {{fromClass: string, name: string, toClass: string, fromCardinality: string, toCardinality: string}} srmRelation
+ */
 function srmRelation(str) {
   function create(fromClass, name, toClass, fromCardinality, toCardinality) {
     return { fromClass, name, toClass, fromCardinality, toCardinality };

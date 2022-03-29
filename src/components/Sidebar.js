@@ -48,7 +48,7 @@ const Sidebar = ({ model }) => {
               <ul style={{ listStyleType: "none" }}>
                 {model.blockchainAppIds.map((id, index) => (
                   <li key={index}>
-                    <IdLink id={id} ontologyId={model.metadata.id} />
+                    <IdLink id={id} model={model} />
                   </li>
                 ))}
               </ul>
@@ -62,7 +62,7 @@ const Sidebar = ({ model }) => {
               <ul style={{ listStyleType: "none" }}>
                 {model.traditionalAppIds.map((id, index) => (
                   <li key={index}>
-                    <IdLink id={id} ontologyId={model.metadata.id} />
+                    <IdLink id={id} model={model} />
                   </li>
                 ))}
               </ul>

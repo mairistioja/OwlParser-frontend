@@ -45,6 +45,7 @@ const LandingPage = ({ setModel }) => {
         navigate("/browse");
       });
   }
+
   return (
     <div className="landingContainer">
       <h1>Load ontology</h1>
