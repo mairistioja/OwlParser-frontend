@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { TreeItem, TreeView, treeItemClasses } from "@mui/lab";
 import { ExpandMore, ChevronRight } from "@mui/icons-material";
 import { IdLink } from "../misc";
 import { styled } from "@mui/material/styles";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { srmClassNames } from "../srm";
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   padding: "0px 0px",
@@ -13,6 +17,8 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
 }));
 
 export default function NavigationTree({ model }) {
+  const [showEmpty, setShowEmpty] = useState(false);
+
   function numItemsText(numItems) {
     return numItems <= 0 ? "" : ` (${numItems})`;
   }
@@ -36,25 +42,105 @@ export default function NavigationTree({ model }) {
     }
     return { ...props, key: props.nodeId };
   }
-  function renderTree(node) {
-    return (
-      <TreeItem {...treeItemPropertiesForNode(node)}>
-        {node.children.map((child) => renderTree(child))}
-      </TreeItem>
-    );
-  }
-  function subTree(name, key) {
+  function generateCategoryTree(key) {
     const itemArray =
       key in model.srmClassHierarchy ? model.srmClassHierarchy[key] : [];
-    return renderTree({
-      label: name,
+    return {
+      label: srmClassNames[key],
       nodeId: `category:${key}`,
       children: itemArray,
-    });
+      canBeHidden: itemArray.length <= 0,
+    };
   }
+
+  const generateCategory = ({ label, nodeId, children }) => {
+    let canBeHidden = true;
+    for (const child of children) {
+      if ("canBeHidden" in child) {
+        if (!child.canBeHidden) {
+          canBeHidden = false;
+          break;
+        }
+      } else {
+        canBeHidden = false;
+        break;
+      }
+    }
+    return { label, nodeId, children, canBeHidden };
+  };
+
+  const tree = [
+    generateCategory({
+      label: "Risk-related concepts",
+      nodeId: "risk_related",
+      children: [
+        generateCategoryTree("risk"),
+        generateCategoryTree("event"),
+        generateCategoryTree("impact"),
+        generateCategoryTree("threat"),
+        generateCategoryTree("vulnerability"),
+        generateCategoryTree("threatAgent"),
+        generateCategoryTree("attackMethod"),
+      ],
+    }),
+    generateCategory({
+      label: "Risk-treatment-related concepts",
+      nodeId: "risk_treatment_related",
+      children: [
+        generateCategoryTree("riskTreatment"),
+        generateCategoryTree("securityRequirement"),
+        generateCategoryTree("control"),
+      ],
+    }),
+    generateCategory({
+      label: "Asset-related concepts",
+      nodeId: "asset_related",
+      children: [
+        generateCategoryTree("securityCriterion"),
+        generateCategory({
+          label: "Asset",
+          nodeId: "asset",
+          children: [
+            generateCategoryTree("informationSystemAsset"),
+            generateCategoryTree("businessAsset"),
+          ],
+        }),
+      ],
+    }),
+  ];
+
+  const renderTree = (items, showEmptyCategories) => {
+    return items.reduce((result, node) => {
+      if (
+        showEmptyCategories ||
+        !("canBeHidden" in node) ||
+        !node.canBeHidden
+      ) {
+        result.push(
+          <StyledTreeItem {...treeItemPropertiesForNode(node)}>
+            {renderTree(node.children, showEmptyCategories)}
+          </StyledTreeItem>
+        );
+      }
+      return result;
+    }, []);
+  };
 
   return (
     <>
+      <FormGroup>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showEmpty}
+              onChange={(event) => {
+                setShowEmpty(event.target.checked);
+              }}
+            />
+          }
+          label="Show empty categories"
+        />
+      </FormGroup>
       <TreeView
         className="sidebar"
         defaultCollapseIcon={<ExpandMore />}
@@ -67,38 +153,9 @@ export default function NavigationTree({ model }) {
         ]}
         sx={{ padding: "1rem 0.5rem" }}
       >
-        <StyledTreeItem
-          label="Risk-related concepts"
-          nodeId="category:risk_related"
-        >
-          {subTree("Risk", "risk")}
-          {subTree("Event", "event")}
-          {subTree("Impact", "impact")}
-          {subTree("Threat", "threat")}
-          {subTree("Vulnerability", "vulnerability")}
-          {subTree("Threat agent", "threatAgent")}
-          {subTree("Attack method", "attackMethod")}
-        </StyledTreeItem>
-        <StyledTreeItem
-          label="Risk-treatment-related concepts"
-          nodeId="category:risk_treatment_related"
-        >
-          {subTree("Risk treatment", "riskTreatment")}
-          {subTree("Security requirement", "securityRequirement")}
-          {subTree("Control", "control")}
-        </StyledTreeItem>
-        <StyledTreeItem
-          label="Asset-related concepts"
-          nodeId="category:asset_related"
-        >
-          {subTree("Security Criterion", "securityCriterion")}
-          <StyledTreeItem label="Asset" nodeId="category:asset">
-            {subTree("IS asset", "informationSystemAsset")}
-            {subTree("Business asset", "businessAsset")}
-          </StyledTreeItem>
-        </StyledTreeItem>
+        {renderTree(tree, showEmpty)}
       </TreeView>
-      <hr></hr>
+      <hr />
       <TreeView
         defaultCollapseIcon={<ExpandMore />}
         defaultExpandIcon={<ChevronRight />}
@@ -109,7 +166,7 @@ export default function NavigationTree({ model }) {
           }
           nodeId="category:other"
         >
-          {model.otherClassHierarchy.map((child) => renderTree(child))}
+          {renderTree(model.otherClassHierarchy, showEmpty)}
         </StyledTreeItem>
       </TreeView>
     </>

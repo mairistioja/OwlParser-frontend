@@ -2,7 +2,7 @@ export const srmClassNames = {
   // Risk treatment related:
   riskTreatment: "Risk treatment",
   securityRequirement: "Security Requirement",
-  control: "Control",
+  control: "Countermeasure", // "Control",
   // Risk related:
   risk: "Risk",
   event: "Event",
@@ -12,9 +12,9 @@ export const srmClassNames = {
   threatAgent: "Threat agent",
   attackMethod: "Attack method",
   // Asset related:
-  securityCriterion: "Security criterion",
+  securityCriterion: "Security criteria", // "Security criterion",
   asset: "Asset",
-  informationSystemAsset: "Information system asset",
+  informationSystemAsset: "System asset", // "Information system asset",
   businessAsset: "Business asset",
 };
 
