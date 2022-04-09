@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { TreeItem, TreeView, treeItemClasses } from "@mui/lab";
 import { ExpandMore, ChevronRight } from "@mui/icons-material";
-import { IdLink } from "../misc";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { srmClassNames } from "../srm";
+import { srmClasses } from "../srm";
+import ClassLink from "./ClassLink";
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   padding: "0px 0px",
@@ -28,7 +28,7 @@ export default function NavigationTree({ model }) {
       props = {
         label: (
           <>
-            <IdLink id={node.id} model={model} />
+            <ClassLink classId={node.id} model={model} renderTypes={false} />
             {numItemsText(node.children.length)}
           </>
         ),
@@ -46,7 +46,7 @@ export default function NavigationTree({ model }) {
     const itemArray =
       key in model.srmClassHierarchy ? model.srmClassHierarchy[key] : [];
     return {
-      label: srmClassNames[key],
+      label: srmClasses[key].name,
       nodeId: `category:${key}`,
       children: itemArray,
       canBeHidden: itemArray.length <= 0,

@@ -1,7 +1,8 @@
 import { Tooltip } from "@mui/material";
+import { NavLink } from "react-router-dom";
 import React, { Fragment } from "react";
-import { IdLink, srmClassText } from "../misc";
-import { srmClassNames } from "../srm";
+import { minimizeOwlId, srmClassText } from "../misc";
+import SRM from "../srm";
 
 const ClassLink = ({ classId, model, renderTypes = true }) => {
   const types = [];
@@ -13,13 +14,17 @@ const ClassLink = ({ classId, model, renderTypes = true }) => {
     const srmClasses = [];
     const others = [];
     for (const ancestorId of ancestorIds) {
-      const container = ancestorId in srmClassNames ? srmClasses : others;
+      const container = ancestorId in SRM.srmClasses ? srmClasses : others;
       container.push(ancestorId);
     }
-    srmClasses.sort((lhs, rhs) => srmClassNames[lhs] < srmClassNames[rhs]);
+    srmClasses.sort(
+      (lhs, rhs) => SRM.srmClasses[lhs].name < SRM.srmClasses[rhs].name
+    );
     for (const srmClass of srmClasses) {
       if (types.length > 0) types.push(", ");
-      types.push(<Fragment key={srmClass}>{srmClassText(srmClass)}</Fragment>);
+      types.push(
+        <Fragment key={srmClass}>{srmClassText(srmClass, model)}</Fragment>
+      );
     }
     if (others.length > 0) {
       others.sort();
@@ -33,7 +38,12 @@ const ClassLink = ({ classId, model, renderTypes = true }) => {
   }
   return (
     <>
-      <IdLink id={classId} model={model} /> {types.length > 0 && <>({types})</>}
+      <Tooltip title={classId}>
+        <NavLink to={{ hash: `#id:${classId}` }}>
+          {minimizeOwlId(classId, model)}
+        </NavLink>
+      </Tooltip>{" "}
+      {types.length > 0 && <>({types})</>}
     </>
   );
 };

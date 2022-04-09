@@ -1,19 +1,18 @@
 import "./App.css";
 
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import BrowsePage from "./Browse";
-import LandingPage from "./LandingPage";
+import ContentWrapper from "./components/ContentWrapper";
+import LandingPage from "./components/LandingPage";
 import Header from "./components/Header";
-
-const AppContainer = ({ model }) => {
-  return (
-    <>
-      <Header model={model} />
-      <Outlet />
-    </>
-  );
-};
+import { BrowserRouter } from "react-router-dom";
+import {
+  simplifyTriples,
+  extractSrmIdsByType,
+  buildModel,
+  owlIdIsBlank,
+} from "./parsing";
+import SrmMappingPage from "./components/SrmMappingPage";
+import { srmClasses, srmRelations } from "./srm";
 
 // Copied from https://usehooks.com/useLocalStorage/
 function useLocalStorage(key, initialValue) {
@@ -59,15 +58,107 @@ function useLocalStorage(key, initialValue) {
 }
 
 const App = () => {
-  const [model, setModel] = useLocalStorage("model", null);
+  const [savedState, setSavedState] = useLocalStorage("savedState", {
+    currentActivity: "loadFile",
+  });
+
+  const setTriples = (triples) => {
+    const [srmTypes, nonSrmTypes, nonTypeTriples] = extractSrmIdsByType(
+      simplifyTriples(triples)
+    );
+    setSavedState({
+      currentActivity: "mapSrmClasses",
+      srmTypes,
+      nonSrmTypes,
+      nonTypeTriples,
+      srmClassOwlIds: Object.entries(srmClasses).reduce(
+        (ids, [srmId, srmClass]) => {
+          if (!srmClass.needMapping) return ids;
+          for (const classId of srmTypes.classIds) {
+            if (
+              !Object.values(ids).includes(classId) &&
+              srmClass.guessRegex.test(classId)
+            )
+              return { ...ids, [srmId]: classId };
+          }
+          return { ...ids, [srmId]: "" };
+        },
+        {}
+      ),
+    });
+  };
+
+  const completeSrmClassOwlIds = (srmClassOwlIds) => {
+    console.assert(savedState.currentActivity === "mapSrmClasses");
+    console.debug("SRM class mapping done!", srmClassOwlIds);
+    setSavedState({
+      ...savedState,
+      currentActivity: "mapSrmRelations",
+      srmClassOwlIds,
+      srmRelationOwlIds: Object.entries(srmRelations).reduce(
+        (ids, [srmId, srmRelation]) => {
+          if (srmRelation.guessRegex !== null) {
+            for (const propertyId of savedState.srmTypes.objectPropertyIds) {
+              if (
+                !Object.values(ids).includes(propertyId) &&
+                srmRelation.guessRegex.test(propertyId)
+              ) {
+                return { ...ids, [srmId]: propertyId };
+              }
+            }
+          }
+          return { ...ids, [srmId]: "" };
+        },
+        {}
+      ),
+    });
+  };
+
+  const completeSrmRelationOwlIds = (srmRelationOwlIds) => {
+    console.assert(savedState.currentActivity === "mapSrmRelations");
+    console.debug("SRM relation mapping done!", srmRelationOwlIds);
+    setSavedState({
+      ...savedState,
+      currentActivity: "browse",
+      srmRelationOwlIds,
+      ...buildModel(
+        savedState.srmTypes,
+        savedState.nonTypeTriples,
+        savedState.srmClassOwlIds
+      ),
+    });
+  };
+
+  const resetApp = () => {
+    setSavedState({ currentActivity: "loadFile" });
+  };
+
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AppContainer model={model} />}>
-          <Route index element={<LandingPage setModel={setModel} />} />
-          <Route path="browse" element={<BrowsePage model={model} />} />
-        </Route>
-      </Routes>
+      <Header onReset={resetApp} />
+      {savedState.currentActivity === "loadFile" ? (
+        <LandingPage setTriples={setTriples} />
+      ) : savedState.currentActivity === "mapSrmClasses" ? (
+        <SrmMappingPage
+          heading="Map SRM classes"
+          ids={savedState.srmTypes.classIds.filter((id) => !owlIdIsBlank(id))}
+          initialMapping={savedState.srmClassOwlIds}
+          doneButtonLabel="Continue"
+          onCancel={resetApp}
+          onDone={completeSrmClassOwlIds}
+        />
+      ) : savedState.currentActivity === "mapSrmRelations" ? (
+        <SrmMappingPage
+          heading="Map SRM relations"
+          ids={savedState.srmTypes.objectPropertyIds}
+          initialMapping={savedState.srmRelationOwlIds}
+          doneButtonLabel="Continue"
+          onCancel={resetApp}
+          onDone={completeSrmRelationOwlIds}
+        />
+      ) : (
+        <ContentWrapper model={savedState} onClose={resetApp} />
+      )}
     </BrowserRouter>
   );
 };

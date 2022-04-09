@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { IdLink } from "../misc";
+import ClassLink from "./ClassLink";
 
 const Sidebar = ({ model }) => {
   const [tabSelected, setTabSelected] = useState("tree");
@@ -48,7 +48,7 @@ const Sidebar = ({ model }) => {
               <ul style={{ listStyleType: "none" }}>
                 {model.blockchainAppIds.map((id, index) => (
                   <li key={index}>
-                    <IdLink id={id} model={model} />
+                    <ClassLink classId={id} model={model} renderTypes={false} />
                   </li>
                 ))}
               </ul>
@@ -62,7 +62,7 @@ const Sidebar = ({ model }) => {
               <ul style={{ listStyleType: "none" }}>
                 {model.traditionalAppIds.map((id, index) => (
                   <li key={index}>
-                    <IdLink id={id} model={model} />
+                    <ClassLink classId={id} model={model} renderTypes={false} />
                   </li>
                 ))}
               </ul>
