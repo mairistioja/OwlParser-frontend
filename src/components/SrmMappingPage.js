@@ -72,7 +72,7 @@ const SrmMappingPage = ({
 
   return (
     <>
-      <h1>{heading}</h1>
+      <h1 style={{ marginLeft: "16px" }}>{heading}</h1>
       <List dense={true} className="srmMappingList">
         {Object.entries(mapping).map(([srmId, id], index) => (
           <ListItem key={index}>
