@@ -1,15 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { owlIdIsBlank } from "../parsing";
-import {
-  srmClassNames,
-  srmClassOwlIds,
-  srmRelations,
-  srmRelationOwlIds,
-} from "../srm.js";
+import { srmClasses, srmRelations } from "../srm.js";
 import { minimizeOwlId, srmClassText } from "../misc.js";
 import ClassLink from "./ClassLink";
-import { Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const classHierachyContains = (classId, hierarchyArray) => {
   const toExamine = [...hierarchyArray];
@@ -30,13 +26,7 @@ const isVulnerability = (classId, model) =>
 const vulnerabilityMitigations = (classId, model) => {
   const r = [];
   const mitigatesPropertyId =
-    srmRelationOwlIds["securityRequirementMitigatesRisk"];
-  console.log("classId", classId);
-  console.log("mitigatesPropertyId", mitigatesPropertyId);
-  console.log(
-    "model.classUsedInRelations[classId]",
-    model.classUsedInRelations[classId]
-  );
+    model.srmRelationOwlIds["securityRequirementMitigatesRisk"];
   for (const relation of model.classUsedInRelations[classId])
     if (relation.relation.propertyId === mitigatesPropertyId)
       r.push(relation.classId);
@@ -44,15 +34,16 @@ const vulnerabilityMitigations = (classId, model) => {
 };
 
 function renderRelationItemHead(propertyId, model) {
-  for (const srmRelation in srmRelationOwlIds) {
-    if (propertyId === srmRelationOwlIds[srmRelation]) {
+  for (const srmRelation in model.srmRelationOwlIds) {
+    if (propertyId === model.srmRelationOwlIds[srmRelation]) {
       const r = srmRelations[srmRelation];
       return (
         <>
           <Tooltip title={propertyId}>
             <strong>{r.name}</strong>
           </Tooltip>{" "}
-          ({srmClassText(r.fromClass)} &#8594; {srmClassText(r.toClass)}):
+          ({srmClassText(r.fromClass, model)} &#8594;{" "}
+          {srmClassText(r.toClass, model)}):
         </>
       );
     }
@@ -68,9 +59,9 @@ function renderDerivationChain(chain, model) {
   return (
     <ul>
       <li>
-        {chain[0] in srmClassNames ? (
-          <Tooltip title={srmClassOwlIds[chain[0]]}>
-            <strong>{srmClassNames[chain[0]]}</strong>
+        {chain[0] in srmClasses ? (
+          <Tooltip title={model.srmClassOwlIds[chain[0]]}>
+            <strong>{srmClasses[chain[0]].name}</strong>
           </Tooltip>
         ) : (
           <ClassLink
@@ -137,25 +128,41 @@ function renderTargetClass(target, model, expandVulnerabilityMitigations) {
   return classLink;
 }
 
-const Content = ({ model }) => {
+const Content = ({ model, onClose }) => {
   const { hash } = useLocation();
   const [activeClassId, setActiveClassId] = useState("");
 
   useEffect(() => {
     if (hash.startsWith("#id:")) {
-      setActiveClassId(hash.slice(4));
+      const classIdCandidate = hash.slice(4);
+      setActiveClassId(
+        model.srmTypes.classIds.includes(classIdCandidate)
+          ? classIdCandidate
+          : ""
+      );
     } else if (hash.length > 0) {
       console.warn("Unsupported URL fragment!");
     }
-  }, [hash]);
+  }, [hash, model.srmTypes.classIds]);
 
   return (
-    <div id="content">
+    <div id="contentContainer">
+      <div id="ontologyHeader">
+        <div id="metadata">
+          <h3>{model.metadata.title}</h3>
+          <p>by {model.metadata.creator}</p>
+        </div>
+        <Tooltip title="Close current ontology">
+          <IconButton onClick={onClose} aria-label="close">
+            <CloseIcon />
+          </IconButton>
+        </Tooltip>
+      </div>
       {activeClassId.length === 0 ? (
         "No class selected"
       ) : (
         <>
-          <div>
+          <div id="content">
             <h2>Derivations:</h2>
             {model.classDerivationChains[activeClassId].map((chain, index) => (
               <div key={index}>
