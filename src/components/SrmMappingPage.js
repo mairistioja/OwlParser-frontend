@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   IconButton,
@@ -12,6 +12,7 @@ import { Clear, Edit, Restore } from "@mui/icons-material";
 import { srmClasses, srmRelations } from "../srm";
 import { useEffect } from "react";
 import SrmMappingSelectDialog from "./SrmMappingSelectDialog";
+import { PropTypes } from "prop-types";
 
 const SrmMappingPage = ({
   ids,
@@ -133,6 +134,16 @@ const SrmMappingPage = ({
       </Button>
     </>
   );
+};
+
+SrmMappingPage.propTypes = {
+  ids: PropTypes.arrayOf(PropTypes.string).isRequired,
+  heading: PropTypes.string.isRequired,
+  initialMapping: PropTypes.objectOf(PropTypes.string).isRequired,
+  onCancel: PropTypes.func.isRequired,
+  onDone: PropTypes.func.isRequired,
+  doneButtonLabel: PropTypes.string,
+  cancelButtonLabel: PropTypes.string,
 };
 
 export default SrmMappingPage;

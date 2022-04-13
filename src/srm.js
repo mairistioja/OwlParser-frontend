@@ -49,7 +49,8 @@ export const srmClasses = {
 /**
  * Returns relation parameters from srmRelations constants
  * @param {string} str
- * @return {{fromClass: string, name: string, toClass: string, fromCardinality: string, toCardinality: string}} srmRelation
+ * @return {{fromClass: string, name: string, toClass: string,
+ *          fromCardinality: string, toCardinality: string}} srmRelation
  */
 function srmRelation(str, guessRegex) {
   function create(

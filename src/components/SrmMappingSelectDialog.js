@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -13,6 +13,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect } from "react";
+import { PropTypes } from "prop-types";
 
 export const SrmMappingSelectDialog = ({
   title,
@@ -78,6 +79,15 @@ export const SrmMappingSelectDialog = ({
       </DialogActions>
     </Dialog>
   );
+};
+
+SrmMappingSelectDialog.propTypes = {
+  title: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  ids: PropTypes.arrayOf(PropTypes.string).isRequired,
+  defaultId: PropTypes.string.isRequired,
+  onSelectId: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default SrmMappingSelectDialog;

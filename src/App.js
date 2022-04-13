@@ -135,7 +135,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Header onReset={resetApp} />
+      <Header />
       {savedState.currentActivity === "loadFile" ? (
         <LandingPage setTriples={setTriples} />
       ) : savedState.currentActivity === "mapSrmClasses" ? (

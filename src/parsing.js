@@ -85,7 +85,8 @@ export function extractSrmIdsByType(simplifiedTriples) {
  * Parses triples from RdfXMLParser stream
  * @param {Object[]} triples of object, predicate and subject TODO fix
  * @returns {Object} parsedTriples
- * @returns {{id: string, creator: string, title: string, comment: string, versionIRI: string, versionInfo: string}} parsedTriples.metadata
+ * @returns {{id: string, creator: string, title: string,
+ *            comment: string, versionIRI: string, versionInfo: string}} parsedTriples.metadata
  * @returns {Object} parsedTriples.srmClassHierarchy, srmClass -> [{ontId, children: [x]} : x]
  * @returns {Object[]} parsedTriples.otherClassHierarchy, [{ontId, children: [x]} : x]
  * @returns {Object} parsedTriples.classRelations, id -> [{propertyId, targetClass}]

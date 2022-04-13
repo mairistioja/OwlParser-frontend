@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { owlIdIsBlank } from "../parsing";
 import { srmClasses, srmRelations } from "../srm.js";
-import { minimizeOwlId, srmClassText } from "../misc.js";
+import { minimizeOwlId } from "../misc.js";
+import { SrmClassText } from "./SrmClassText";
 import ClassLink from "./ClassLink";
 import { IconButton, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { PropTypes } from "prop-types";
 
 const classHierachyContains = (classId, hierarchyArray) => {
   const toExamine = [...hierarchyArray];
@@ -42,8 +44,8 @@ function renderRelationItemHead(propertyId, model) {
           <Tooltip title={propertyId}>
             <strong>{r.name}</strong>
           </Tooltip>{" "}
-          ({srmClassText(r.fromClass, model)} &#8594;{" "}
-          {srmClassText(r.toClass, model)}):
+          <SrmClassText srmClass={r.fromClass} model={model} /> &#8594;{" "}
+          <SrmClassText srmClass={r.toClass} model={model} />:
         </>
       );
     }
@@ -268,6 +270,53 @@ const Content = ({ model, onClose }) => {
       )}
     </div>
   );
+};
+
+const propertyClassProp = {
+  classId: PropTypes.string.isRequired,
+};
+propertyClassProp.unionOf = PropTypes.arrayOf(propertyClassProp);
+propertyClassProp.intersectionOf = PropTypes.arrayOf(propertyClassProp);
+
+const relationProp = PropTypes.exact({
+  propertyId: PropTypes.string.isRequired,
+  targetClass: propertyClassProp,
+});
+
+Content.propTypes = {
+  model: PropTypes.shape({
+    srmTypes: PropTypes.shape({
+      classIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }).isRequired,
+    metadata: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      creator: PropTypes.string.isRequired,
+    }).isRequired,
+    classDerivationChains: PropTypes.objectOf(
+      PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
+    ).isRequired,
+    subClasses: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+      .isRequired,
+    classRelations: PropTypes.objectOf(PropTypes.arrayOf(relationProp))
+      .isRequired,
+    classUsedInRelations: PropTypes.objectOf(
+      PropTypes.arrayOf(
+        PropTypes.exact({
+          classId: PropTypes.string.isRequired,
+          relation: relationProp,
+        })
+      )
+    ).isRequired,
+    unhandledTriples: PropTypes.objectOf(
+      PropTypes.arrayOf(
+        PropTypes.exact({
+          predicateId: PropTypes.string.isRequired,
+          objectId: PropTypes.string.isRequired,
+        })
+      )
+    ),
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Content;

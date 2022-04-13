@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ReadableWebToNodeStream } from "readable-web-to-node-stream";
 import { Button, Box, FormControl, Input, Tab } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { PropTypes } from "prop-types";
 
 const LandingPage = ({ setTriples }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -132,6 +133,10 @@ const LandingPage = ({ setTriples }) => {
       </Button>
     </div>
   );
+};
+
+LandingPage.propTypes = {
+  setTriples: PropTypes.func.isRequired,
 };
 
 export default LandingPage;

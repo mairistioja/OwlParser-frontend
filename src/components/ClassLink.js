@@ -1,7 +1,9 @@
 import { Tooltip } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import React, { Fragment } from "react";
-import { minimizeOwlId, srmClassText } from "../misc";
+import { PropTypes } from "prop-types";
+import { minimizeOwlId } from "../misc";
+import { SrmClassText } from "./SrmClassText";
 import SRM from "../srm";
 
 const ClassLink = ({ classId, model, renderTypes = true }) => {
@@ -23,7 +25,9 @@ const ClassLink = ({ classId, model, renderTypes = true }) => {
     for (const srmClass of srmClasses) {
       if (types.length > 0) types.push(", ");
       types.push(
-        <Fragment key={srmClass}>{srmClassText(srmClass, model)}</Fragment>
+        <Fragment key={srmClass}>
+          <SrmClassText srmClass={srmClass} model={model} />
+        </Fragment>
       );
     }
     if (others.length > 0) {
@@ -46,6 +50,17 @@ const ClassLink = ({ classId, model, renderTypes = true }) => {
       {types.length > 0 && <>({types})</>}
     </>
   );
+};
+
+ClassLink.propTypes = {
+  classId: PropTypes.string.isRequired,
+  model: PropTypes.shape({
+    classDerivationChains: PropTypes.objectOf(
+      PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
+    ).isRequired,
+    srmClassOwlIds: PropTypes.objectOf(PropTypes.string).isRequired,
+  }).isRequired,
+  renderTypes: PropTypes.boolean,
 };
 
 export default ClassLink;

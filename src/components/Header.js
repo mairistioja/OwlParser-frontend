@@ -1,8 +1,7 @@
-import { Button } from "@mui/material";
 import React from "react";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 
-const Header = ({ onReset }) => {
+const Header = () => {
   // model.metadata.{id,creator,title,comment,versionIRI,versionInfo}
   // TODO confirm reset
   return (
@@ -17,7 +16,6 @@ const Header = ({ onReset }) => {
           OwlParser: A Web Tool for Parsing and Querying SRM-based Ontology
         </h3>
       </div>
-      <Button onClick={onReset}>Reset app</Button>
     </header>
   );
 };

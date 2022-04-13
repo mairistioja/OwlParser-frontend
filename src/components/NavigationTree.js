@@ -7,6 +7,7 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { srmClasses } from "../srm";
 import ClassLink from "./ClassLink";
+import { PropTypes } from "prop-types";
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   padding: "0px 0px",
@@ -16,16 +17,16 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   },
 }));
 
-export default function NavigationTree({ model }) {
+export const NavigationTree = ({ model }) => {
   const [showEmpty, setShowEmpty] = useState(false);
 
   function numItemsText(numItems) {
     return numItems <= 0 ? "" : ` (${numItems})`;
   }
   function treeItemPropertiesForNode(node) {
-    let props;
+    let itemProperties;
     if ("id" in node) {
-      props = {
+      itemProperties = {
         label: (
           <>
             <ClassLink classId={node.id} model={model} renderTypes={false} />
@@ -35,12 +36,12 @@ export default function NavigationTree({ model }) {
         nodeId: `id:${node.id}`,
       };
     } else {
-      props = {
+      itemProperties = {
         label: node.label + numItemsText(node.children.length),
         nodeId: `category:${node.nodeId}`,
       };
     }
-    return { ...props, key: props.nodeId };
+    return { ...itemProperties, key: itemProperties.nodeId };
   }
   function generateCategoryTree(key) {
     const itemArray =
@@ -171,4 +172,21 @@ export default function NavigationTree({ model }) {
       </TreeView>
     </>
   );
-}
+};
+
+const classHierarchyNode = {
+  ontId: PropTypes.string.isRequired,
+};
+classHierarchyNode.children = PropTypes.arrayOf(classHierarchyNode).isRequired;
+
+NavigationTree.propTypes = {
+  model: PropTypes.shape({
+    srmClassHierarchy: PropTypes.objectOf(PropTypes.arrayOf(classHierarchyNode))
+      .isRequired,
+    otherClassHierarchy: PropTypes.objectOf(
+      PropTypes.arrayOf(classHierarchyNode)
+    ).isRequired,
+  }).isRequired,
+};
+
+export default NavigationTree;

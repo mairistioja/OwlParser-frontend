@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
 import NavigationTree from "./NavigationTree";
 import {
   Accordion,
@@ -72,6 +73,13 @@ const Sidebar = ({ model }) => {
       </TabContext>
     </div>
   );
+};
+
+Sidebar.propTypes = {
+  model: PropTypes.shape({
+    blockchainAppIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    traditionalAppIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }),
 };
 
 export default Sidebar;
