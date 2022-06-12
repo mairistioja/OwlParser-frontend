@@ -2,13 +2,14 @@ import React from "react";
 import Sidebar from "./Sidebar";
 import Content from "./Content";
 import { PropTypes } from "prop-types";
+import Footer from "./Footer";
 
 const ContentWrapper = ({ model, onClose }) => {
   return (
-    <div className="wrapper">
+    <>
       <Sidebar model={model} />
       <Content model={model} onClose={onClose} />
-    </div>
+    </>
   );
 };
 

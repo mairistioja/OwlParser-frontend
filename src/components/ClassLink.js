@@ -34,7 +34,7 @@ const ClassLink = ({ classId, model, renderTypes = true }) => {
       others.sort();
       if (types.length > 0) types.push(" and ");
       types.push(
-        <Tooltip title={others.join(", ")} key={"other"}>
+        <Tooltip title={others.join(", ")} key={"other"} disableInteractive>
           <span>{types.length > 0 ? "others" : "other"}</span>
         </Tooltip>
       );
@@ -42,7 +42,7 @@ const ClassLink = ({ classId, model, renderTypes = true }) => {
   }
   return (
     <>
-      <Tooltip title={classId}>
+      <Tooltip title={classId} disableInteractive>
         <NavLink to={{ hash: `#id:${classId}` }}>
           {minimizeOwlId(classId, model)}
         </NavLink>

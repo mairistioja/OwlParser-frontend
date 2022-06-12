@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { TreeItem, TreeView, treeItemClasses } from "@mui/lab";
 import { ExpandMore, ChevronRight } from "@mui/icons-material";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { styled } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
+import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { srmClasses } from "../srm";
 import ClassLink from "./ClassLink";
 import { PropTypes } from "prop-types";
+import { InputAdornment } from "@mui/material";
+import { minimizeOwlId } from "../misc";
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   padding: "0px 0px",
@@ -18,7 +22,8 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
 }));
 
 export const NavigationTree = ({ model }) => {
-  const [showEmpty, setShowEmpty] = useState(false);
+  const [showEmpty, setShowEmpty] = useState(true);
+  const [filterText, setFilterText] = useState("");
 
   function numItemsText(numItems) {
     return numItems <= 0 ? "" : ` (${numItems})`;
@@ -75,51 +80,65 @@ export const NavigationTree = ({ model }) => {
       label: "Risk-related concepts",
       nodeId: "risk_related",
       children: [
-        generateCategoryTree("risk"),
+        generateCategoryTree("attackMethod"),
         generateCategoryTree("event"),
         generateCategoryTree("impact"),
+        generateCategoryTree("risk"),
         generateCategoryTree("threat"),
-        generateCategoryTree("vulnerability"),
         generateCategoryTree("threatAgent"),
-        generateCategoryTree("attackMethod"),
+        generateCategoryTree("vulnerability"),
       ],
     }),
     generateCategory({
       label: "Risk-treatment-related concepts",
       nodeId: "risk_treatment_related",
       children: [
+        generateCategoryTree("control"),
         generateCategoryTree("riskTreatment"),
         generateCategoryTree("securityRequirement"),
-        generateCategoryTree("control"),
       ],
     }),
     generateCategory({
       label: "Asset-related concepts",
       nodeId: "asset_related",
       children: [
-        generateCategoryTree("securityCriterion"),
         generateCategory({
           label: "Asset",
           nodeId: "asset",
           children: [
-            generateCategoryTree("informationSystemAsset"),
             generateCategoryTree("businessAsset"),
+            generateCategoryTree("informationSystemAsset"),
           ],
         }),
+        generateCategoryTree("securityCriterion"),
       ],
     }),
   ];
 
-  const renderTree = (items, showEmptyCategories) => {
-    return items.reduce((result, node) => {
-      if (
-        showEmptyCategories ||
-        !("canBeHidden" in node) ||
-        !node.canBeHidden
-      ) {
+  const renderTree = (items) => {
+    const filterItems = (items) => {
+      const matchText = filterText.toLowerCase();
+      const filtered = [];
+      for (const item of items) {
+        if ("id" in item) {
+          if (minimizeOwlId(item.id, model).toLowerCase().includes(matchText)) {
+            filtered.push(item);
+          }
+        } else if (item.label.toLowerCase().includes(matchText)) {
+          filtered.push(item);
+        } else {
+          const filteredChildren = filterItems(item.children);
+          if (filteredChildren.length > 0)
+            filtered.push({ ...item, children: filteredChildren });
+        }
+      }
+      return filtered;
+    };
+    return filterItems(items).reduce((result, node) => {
+      if (showEmpty || !("canBeHidden" in node) || !node.canBeHidden) {
         result.push(
           <StyledTreeItem {...treeItemPropertiesForNode(node)}>
-            {renderTree(node.children, showEmptyCategories)}
+            {renderTree(node.children)}
           </StyledTreeItem>
         );
       }
@@ -130,16 +149,29 @@ export const NavigationTree = ({ model }) => {
   return (
     <>
       <FormGroup>
+        <TextField
+          placeholder="Filter"
+          variant="standard"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <FilterAltIcon />
+              </InputAdornment>
+            ),
+          }}
+          onChange={(event) => setFilterText(event.target.value)}
+          value={filterText}
+        />
         <FormControlLabel
           control={
             <Checkbox
-              checked={showEmpty}
+              checked={!showEmpty}
               onChange={(event) => {
-                setShowEmpty(event.target.checked);
+                setShowEmpty(!event.target.checked);
               }}
             />
           }
-          label="Show empty categories"
+          label="Hide empty categories"
         />
       </FormGroup>
       <TreeView
@@ -154,21 +186,20 @@ export const NavigationTree = ({ model }) => {
         ]}
         sx={{ padding: "1rem 0.5rem" }}
       >
-        {renderTree(tree, showEmpty)}
+        {renderTree(tree)}
       </TreeView>
       <hr />
       <TreeView
         defaultCollapseIcon={<ExpandMore />}
         defaultExpandIcon={<ChevronRight />}
       >
-        <StyledTreeItem
-          label={
-            "Extra Details" + numItemsText(model.otherClassHierarchy.length)
-          }
-          nodeId="category:other"
-        >
-          {renderTree(model.otherClassHierarchy, showEmpty)}
-        </StyledTreeItem>
+        {renderTree([
+          {
+            label: "Extra Details",
+            nodeId: "category:other",
+            children: model.otherClassHierarchy,
+          },
+        ])}
       </TreeView>
     </>
   );

@@ -75,48 +75,64 @@ const SrmMappingPage = ({
     <>
       <h1 style={{ marginLeft: "16px" }}>{heading}</h1>
       <List dense={true} className="srmMappingList">
-        {Object.entries(mapping).map(([srmId, id], index) => (
-          <ListItem key={index}>
-            <ListItemText
-              primary={buildSrmDisplayLabel(srmId)}
-              secondary={id}
-            />
-            <ListItemSecondaryAction>
-              <Tooltip title="Edit">
-                <IconButton
-                  edge="end"
-                  aria-label="edit"
-                  disabled={availableIds.length <= 0}
-                  onClick={() => openSelectDialog(srmId)}
-                >
-                  <Edit />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Restore default">
-                <IconButton
-                  edge="end"
-                  aria-label="restore"
-                  disabled={mapping[srmId] === initialMapping[srmId]}
-                  onClick={() =>
-                    setMapping({ ...mapping, [srmId]: initialMapping[srmId] })
-                  }
-                >
-                  <Restore />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Delete">
-                <IconButton
-                  edge="end"
-                  aria-label="clear"
-                  disabled={mapping[srmId] === ""}
-                  onClick={() => setMapping({ ...mapping, [srmId]: "" })}
-                >
-                  <Clear />
-                </IconButton>
-              </Tooltip>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
+        {Object.entries(mapping)
+          .sort(([lhsSrmId, lhsId], [rhsSrmId, rhsId]) => {
+            return buildSrmDisplayLabel(lhsSrmId).localeCompare(
+              buildSrmDisplayLabel(rhsSrmId),
+              "en"
+            );
+          })
+          .map(([srmId, id], index) => (
+            <ListItem key={index}>
+              <ListItemText
+                primary={buildSrmDisplayLabel(srmId)}
+                secondary={id}
+              />
+              <ListItemSecondaryAction>
+                <Tooltip title="Edit">
+                  <span>
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      disabled={availableIds.length <= 0}
+                      onClick={() => openSelectDialog(srmId)}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+                <Tooltip title="Restore default">
+                  <span>
+                    <IconButton
+                      edge="end"
+                      aria-label="restore"
+                      disabled={mapping[srmId] === initialMapping[srmId]}
+                      onClick={() =>
+                        setMapping({
+                          ...mapping,
+                          [srmId]: initialMapping[srmId],
+                        })
+                      }
+                    >
+                      <Restore />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+                <Tooltip title="Delete">
+                  <span>
+                    <IconButton
+                      edge="end"
+                      aria-label="clear"
+                      disabled={mapping[srmId] === ""}
+                      onClick={() => setMapping({ ...mapping, [srmId]: "" })}
+                    >
+                      <Clear />
+                    </IconButton>
+                  </span>
+                </Tooltip>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
       </List>
       {selectDialogProps !== null && (
         <SrmMappingSelectDialog {...selectDialogProps} />

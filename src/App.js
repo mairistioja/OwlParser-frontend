@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ContentWrapper from "./components/ContentWrapper";
 import LandingPage from "./components/LandingPage";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import { BrowserRouter } from "react-router-dom";
 import {
   simplifyTriples,
@@ -159,6 +160,7 @@ const App = () => {
       ) : (
         <ContentWrapper model={savedState} onClose={resetApp} />
       )}
+      <Footer />
     </BrowserRouter>
   );
 };

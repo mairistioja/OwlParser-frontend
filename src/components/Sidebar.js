@@ -26,7 +26,7 @@ const Sidebar = ({ model }) => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleTabChange}>
             <Tab label="SRM" value="tree" />
-            <Tab label="Threats" value="lists" />
+            <Tab label="Threats by category" value="lists" />
           </TabList>
         </Box>
         <TabPanel value="tree" sx={{ padding: "8px" }}>

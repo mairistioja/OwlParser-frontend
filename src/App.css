@@ -1,14 +1,46 @@
 body {
   font-family: "Montserrat", sans-serif;
+  margin-top: 40pt;
+  margin-bottom: 20pt;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  height: 40pt;
+  width: 100vw;
+  top: 0;
+  background: rgb(77, 77, 77);
+  color: white;
+  border-bottom: 1px solid black;
+  z-index: 100;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  height: 20pt;
+  background-color: rgb(77, 77, 77);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10pt;
+  gap: 0.5em;
+}
+
+footer > a {
+  color: white;
 }
 
 #sidebar {
-  min-width: 30%;
-  max-width: 50%;
-  height: 100%;
+  position: fixed;
+  width: 30vw;
+  top: 40pt;
+  bottom: 20pt;
   left: 0;
-  top: 0;
-  bottom: 0;
   background-color: rgb(209, 242, 253);
   padding: 1rem 0.5rem 1rem;
   overflow: auto;
@@ -18,7 +50,8 @@ body {
 
 #contentContainer {
   height: 100%;
-  width: 100%;
+  margin-left: 30vw;
+  max-width: 70vw;
   overflow: auto;
   box-sizing: border-box;
   flex-grow: 1;
@@ -35,19 +68,8 @@ body {
   display: flex;
   position: absolute;
   top: 3.6rem;
-  bottom: 0;
+  bottom: 5vh;
   width: 100%;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  background: rgb(77, 77, 77);
-  color: white;
-  z-index: 10;
-  border-bottom: 1px solid black;
 }
 
 #logo {
@@ -83,6 +105,11 @@ header {
   margin-bottom: 0.5rem;
   margin-top: 0.5rem;
   color: #1d6488;
+}
+
+#classTitle {
+  color: #1d6488;
+  text-align: center;
 }
 
 .landingContainer {

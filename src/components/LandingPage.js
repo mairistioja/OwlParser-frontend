@@ -127,7 +127,7 @@ const LandingPage = ({ setTriples }) => {
       <Button
         variant="contained"
         onClick={() => handleIriDownload("sample.owl")}
-        sx={{ mt: "3rem" }}
+        sx={{ mt: "6rem" }}
       >
         Load example
       </Button>

@@ -351,6 +351,20 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
     }
     if (isSubclass) continue;
 
+    // Hack to ignore, if it looks like "asset":
+    if (/^[^#]*#asset$/i.test(classId)) {
+      let stillLooksLikeAsset = true;
+      for (const subClassId of subClasses[classId]) {
+        if (
+          subClassId != srmClassOwlIds["informationSystemAsset"] &&
+          subClassId != srmClassOwlIds["businessAsset"]
+        ) {
+          stillLooksLikeAsset = false;
+        }
+      }
+      if (stillLooksLikeAsset) continue;
+    }
+
     topLevelNonSrmClassIds.push(classId);
   }
   const otherClassHierarchy = []; // [{ontId, children: [x]} : x]

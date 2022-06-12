@@ -165,7 +165,8 @@ const Content = ({ model, onClose }) => {
       ) : (
         <>
           <div id="content">
-            <h2>Derivations:</h2>
+            <h3 id="classTitle">{minimizeOwlId(activeClassId, model)}</h3>
+            <h3>Derivations:</h3>
             {model.classDerivationChains[activeClassId].map((chain, index) => (
               <div key={index}>
                 {["informationSystemAsset", "businessAsset"].includes(chain[0])
@@ -192,7 +193,7 @@ const Content = ({ model, onClose }) => {
                 </ul>
               </>
             )}
-            <h2>Relations:</h2>
+            <h3>Relations:</h3>
             {model.classRelations[activeClassId].length <= 0 ? (
               <p>No known relations</p>
             ) : (
@@ -215,7 +216,7 @@ const Content = ({ model, onClose }) => {
                 })}
               </ul>
             )}
-            <h2>Also used in:</h2>
+            <h3>Also used in:</h3>
             {model.classUsedInRelations[activeClassId].length <= 0 ? (
               <p>No known relations</p>
             ) : (
@@ -245,7 +246,7 @@ const Content = ({ model, onClose }) => {
                 )}
               </ul>
             )}
-            <h2>Other</h2>
+            <h3>Other</h3>
             {activeClassId in model.unhandledTriples &&
             model.unhandledTriples[activeClassId].length > 0
               ? model.unhandledTriples[activeClassId].map((elem, index) => (
