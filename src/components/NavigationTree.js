@@ -188,7 +188,7 @@ export const NavigationTree = ({ model }) => {
       >
         {renderTree(tree)}
       </TreeView>
-      <hr />
+      {/* <hr />
       <TreeView
         defaultCollapseIcon={<ExpandMore />}
         defaultExpandIcon={<ChevronRight />}
@@ -200,7 +200,7 @@ export const NavigationTree = ({ model }) => {
             children: model.otherClassHierarchy,
           },
         ])}
-      </TreeView>
+      </TreeView> */}
     </>
   );
 };

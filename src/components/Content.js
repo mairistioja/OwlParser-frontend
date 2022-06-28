@@ -179,7 +179,7 @@ const Content = ({ model, onClose }) => {
             ))}
             {model.subClasses[activeClassId].length > 0 && (
               <>
-                <h3>Direct children:</h3>
+                <h3>Subclasses:</h3>
                 <ul>
                   {model.subClasses[activeClassId].map((subclass, index) => (
                     <li key={index}>

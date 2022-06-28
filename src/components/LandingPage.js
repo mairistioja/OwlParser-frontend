@@ -126,7 +126,7 @@ const LandingPage = ({ setTriples }) => {
 
       <Button
         variant="contained"
-        onClick={() => handleIriDownload("sample.owl")}
+        onClick={() => handleIriDownload("samples/healthont_v2.owl")}
         sx={{ mt: "6rem" }}
       >
         Load example

@@ -1,0 +1,2768 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://mmisw.org/ont/~mubashar/ULRO#"
+     xml:base="https://mmisw.org/ont/~mubashar/ULRO"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:ULRO="https://mmisw.org/ont/~mubashar/ULRO#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:terms="http://purl.org/dc/terms/"
+     xmlns:CordaSecOnt="https://mmisw.org/ont/~mubashar/CordaSecOnt#">
+    <owl:Ontology rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt">
+        <dc:creator rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mubashar Iqbal (mubashar.iqbal@ut.ee) and Raimundas Matulevičius (rma@ut.ee)</dc:creator>
+        <dc:title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Permissioned Blockchain-based Security Ontology</dc:title>
+        <terms:license rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://creativecommons.org/licenses/by/4.0</terms:license>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CordaSecOnt provides an extensible knowledge base of information security including the notions of Blockchain and Corda platform.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Corda Security Ontology (CordaSecOnt)</rdfs:label>
+        <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#float">2.0</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/creator -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/creator">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This annotation property defines who created this ontology.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="https://mmisw.org/ont/~mubashar/ULRO#Dublin_core"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dc:creator</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is a dublin core metadata term.</rdfs:seeAlso>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/isReferencedBy -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/isReferencedBy">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This annotation property indicates the source from which the knowledge is retrieved for a particular concept.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="https://mmisw.org/ont/~mubashar/ULRO#Dublin_core"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dc:isReferencedBy</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is a dublin core metadata term.</rdfs:seeAlso>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/title -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/title">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This annotation property defines the title of ontology.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="https://mmisw.org/ont/~mubashar/ULRO#Dublin_core"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dc:title</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is a dublin core metadata term.</rdfs:seeAlso>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://purl.org/dc/terms/isPartOf -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/isPartOf">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dublin core annotation property to determine if the threat is connected to traditional or blockchain-based applications.</rdfs:comment>
+        <rdfs:isDefinedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dublin_core"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dcterms:isPartOf</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is a dublin core metadata term.</rdfs:seeAlso>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- http://purl.org/dc/terms/license -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/license">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">This annotation property indicates the license document.</rdfs:comment>
+        <rdfs:isDefinedBy>https://www.dublincore.org/specifications/dublin-core/dcmi-terms/#http://purl.org/dc/terms/license</rdfs:isDefinedBy>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">dcterms:license</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is a dublin core metadata term.</rdfs:seeAlso>
+    </owl:AnnotationProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasCharacteristic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A vulnerability is a characteristic of a one or more system assets that exposes weakness.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">characteristicOf</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#constraintOf -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#constraintOf">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Security criteria is a constraint of business assets.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">constraintOf</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#isExploitedBy"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A threat exploits vulnerabilities in the system.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">exploits</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#harms -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#harms">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#isHarmedBy"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Asset"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A vulnerability harms an asset.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">harms</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#hasCharacteristic -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasCharacteristic">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of characteristicOf where one or more system assets has a characteristic vulnerability that exposes weakness of system assets.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hasCharacteristic</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of constraintOf where security criteria is a constraint of business assets.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">hasConstraint</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#isExploitedBy -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#isExploitedBy">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of exploits where vulnerability in the system is exploited by threat.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isExploitedBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#isHarmedBy -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#isHarmedBy">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Asset"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of harms where an asset is harmed by a vulnerability.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isHarmedBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#isMitigatedBy -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#isMitigatedBy">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of mitigates where  one or more vulnerabilities associated to a particular threat are mitigated by countermeasure.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isMitigatedBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#isNegatedBy -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#isNegatedBy">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of negates where security criteria of business assets is negated by vulnerability.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isNegatedBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#isSupportedBy -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#isSupportedBy">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of supports where one or more business assets is supported by system asset.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isSupportedBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#isTargetedBy -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#isTargetedBy">
+        <owl:inverseOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#InverseFunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It is an inverse relation of targets where one or more system assets are targeted by threat.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">isTargetedBy</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A countermeasure mitigates one or more vulnerabilities associated to a particular threat.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">mitigates</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#negates -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Vulnerability negates the defined security criteria of business assets.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">negates</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#supports -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A system asset supports one or more business assets.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">supports</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#targets -->
+
+    <owl:ObjectProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+        <rdfs:domain rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:range rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A threat targets one or more system assets.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">targets</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Authors -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Authors">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It defines the authors of the book, book chapter, or research paper.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Authors</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#DOI -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DOI">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Digital object identifier to uniquely identify a book, book chapter, or research paper.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DOI</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Link -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Link">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It defines the link of the source if it is a web article.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Link</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Pages -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Pages">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It defines the number of pages in the book, book chapter, or research paper.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Pages</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Publisher -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Publisher">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It defines who published the book, book chapter, or reserach paper.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Publisher</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Title -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Title">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It defines the title of the book, book chapter, or research paper.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Title</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Type -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Type">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It defines the type, for example, is it a book, book chapter, research paper, or web article.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Type</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Year -->
+
+    <owl:DatatypeProperty rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Year">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">It defines in which year the book, book chapter, or research paper is published.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Year</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#AWSCloudHSM -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#AWSCloudHSM">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AWSCloudHSM</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#AccessLog -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#AccessLog">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Log"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AccessLog</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#AccessRight -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#AccessRight">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#FundTransfer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Trading"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AccessRight</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Asset -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Asset">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#isHarmedBy"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Asset are valuable and plays a role accomplishing the organization’s objectives. Assets are classified as system and business assets.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Asset</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#AuthenticationLog -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#AuthenticationLog">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Log"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AuthenticationLog</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#AutorizedNode -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#AutorizedNode">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#PeerToPeerNetwork"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingAccessControl"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AutorizedNode</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The information and services are available to authorized users when needed.</rdfs:comment>
+        <rdfs:label>Availability</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#AzureKeyVault -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#AzureKeyVault">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">AzureKeyVault</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Asset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Business assets describe the information, processes, capabilities and skills essential to the business and its core mission.</rdfs:comment>
+        <rdfs:label>BusinessAsset</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#CentralizedControl -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#CentralizedControl">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#IneffectiveLogging"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CentralizedControl</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#CodeAnalyzer -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#CodeAnalyzer">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContractThreat"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CodeAnalyzer</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ComputationalZeroKnowledge -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ComputationalZeroKnowledge">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ZeroKnowledgeProof"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ComputationalZeroKnowledge</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The data is only available to authorized users.</rdfs:comment>
+        <rdfs:label>Confidentiality</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Consensus -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Consensus">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneValidationOfData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Counterparty"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#CustomerData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Consensus</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#CorDappService -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#CorDappService">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CorDappService</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Countermeasures are controls to improve the security of the system. Countermeasure can be processes, policies, devices, practices or other actions or components of the information system and its organisation that act to reduce risks.</rdfs:comment>
+        <rdfs:label>Countermeasure</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Counterparty -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Counterparty">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Counterparty</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Cryptography -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Cryptography">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Cryptography</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#CustomBuiltJVMSandbox -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#CustomBuiltJVMSandbox">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#UnauthorizedRemoteOperation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CustomBuiltJVMSandbox</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#CustomerData -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#CustomerData">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">CustomerData</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Database -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Database">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeConfirmation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeMatching"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Database</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Deanonymization -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Deanonymization">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#LinkingUserAccountWithTransactionID"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Counterparty"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BlockchainApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appeared</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#DecentralizedAccessControl -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DecentralizedAccessControl">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingAccessControl"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DecentralizedAccessControl</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#DenialOfService -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DenialOfService">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingRequestsFiltering"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeConfirmation"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeMatching"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TraditionalApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitigated</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#DenialOfStack -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DenialOfStack">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotariesConsumeState"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#AutorizedNode"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContract"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#StateReference"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BlockchainApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appeared</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Device -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Device">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#CorDappService"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Device</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DigitalAsset</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalWallet -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalWallet">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#CorDappService"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DigitalWallet</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#DistributedLedger -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DistributedLedger">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#IneffectiveLogging"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DistributedLedger</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ElevationOfPrivilege -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ElevationOfPrivilege">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#UnauthorizedRemoteOperation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#FundTransfer"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Trading"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TraditionalApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitigated</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#EndpointThreat -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#EndpointThreat">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#LackOfAwarness"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Device"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalWallet"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Key"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#User"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BlockchainApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appeared</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorLog -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorLog">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Log"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ErrorLog</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneSmartContract -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneSmartContract">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContract"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ErrorProneSmartContract</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneValidationOfData -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneValidationOfData">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Database"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeConfirmation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeMatching"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ErrorProneValidationOfData</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#EstablishDisciplinaryProcess -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#EstablishDisciplinaryProcess">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#StaffSecurityTraining"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EstablishDisciplinaryProcess</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#EstablishInductionProcess -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#EstablishInductionProcess">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#StaffSecurityTraining"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">EstablishInductionProcess</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Firewall -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Firewall">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#RequestsFiltering"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Firewall</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#FormalAssessmentOfSecuritySkills -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#FormalAssessmentOfSecuritySkills">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#StaffSecurityTraining"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FormalAssessmentOfSecuritySkills</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#FundTransfer -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#FundTransfer">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FundTransfer</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Futurex -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Futurex">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Futurex</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#GemaltoLuna -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#GemaltoLuna">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GemaltoLuna</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecureCommunication"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#InsecureTransmissionOfData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#LackOfAwarness"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingRequestsFiltering"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">HardwareSecurityModule</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessage -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessage">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ImportMessage</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessage"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ImportMessageEngine</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ImproveSecurityUnderstanding -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImproveSecurityUnderstanding">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityAwareness"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ImproveSecurityUnderstanding</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#IneffectiveLogging -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#IneffectiveLogging">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Log"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IneffectiveLogging</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#InformationDisclosure -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#InformationDisclosure">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#IneffectiveLogging"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Log"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TraditionalApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitigated</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#InsecureTransmissionOfData -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#InsecureTransmissionOfData">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">InsecureTransmissionOfData</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Integrity refers to the certainty that the data is not tampered with during or after the submission.</rdfs:comment>
+        <rdfs:label>Integrity</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#IntelSGX -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#IntelSGX">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TrustedExecutionEnvironment"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">IntelSGX</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Key -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Key">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#CorDappService"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Key</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#LackOfAwarness -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#LackOfAwarness">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Device"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalWallet"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Key"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#User"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LackOfAwarness</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionState"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionValidation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ledger</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#LinkingUserAccountWithTransactionID -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#LinkingUserAccountWithTransactionID">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ValidatingNotary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LinkingUserAccountWithTransactionID</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Log -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Log">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Log</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#LogicalBug -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#LogicalBug">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneSmartContract"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">LogicalBug</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingAccessControl -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingAccessControl">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MissingAccessControl</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingCommunicationProtocol -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingCommunicationProtocol">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MissingCommunicationProtocol</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingErrorHandling -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingErrorHandling">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneSmartContract"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MissingErrorHandling</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingInputValidation -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingInputValidation">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneSmartContract"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MissingInputValidation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingRequestsFiltering -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingRequestsFiltering">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Database"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Server"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MissingRequestsFiltering</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MisuseOfLanguageConstruct -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MisuseOfLanguageConstruct">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneSmartContract"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MisuseOfLanguageConstruct</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MonitorEffectivenessOfSecurityTraining -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MonitorEffectivenessOfSecurityTraining">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#StaffSecurityTraining"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MonitorEffectivenessOfSecurityTraining</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#MutuallyAuthenticatedTLSConnection -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MutuallyAuthenticatedTLSConnection">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecureCommunication"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MutuallyAuthenticatedTLSConnection</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#NCipherNShield -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#NCipherNShield">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NCipherNShield</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#NoBackupOfLog -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#NoBackupOfLog">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#IneffectiveLogging"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NoBackupOfLog</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#NoQuantumComputingResistantCryptography -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#NoQuantumComputingResistantCryptography">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Cryptography"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#PeerToPeerNetwork"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NoQuantumComputingResistantCryptography</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotariesConsumeState -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotariesConsumeState">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#AutorizedNode"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContract"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#StateReference"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NonValidatingNotariesConsumeState</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotary -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotary">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Notary"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">NonValidatingNotary</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Notary -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Notary">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#CustomerData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionContent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Notary</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#OperationLog -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#OperationLog">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Log"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">OperationLog</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#PeerToPeerNetwork -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PeerToPeerNetwork">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecureCommunication"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingCommunicationProtocol"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#UnauthorizedRemoteOperation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PeerToPeerNetwork</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#PerfectZeroKnowledge -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PerfectZeroKnowledge">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ZeroKnowledgeProof"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PerfectZeroKnowledge</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#PrivacyViolation -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PrivacyViolation">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SharingFullContentWithValidatingNotaries"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Consensus"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Notary"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BlockchainApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appeared</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#PrivateKey -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PrivateKey">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Key"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PrivateKey</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#PromoteIncidentReportingCulture -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PromoteIncidentReportingCulture">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityAwareness"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PromoteIncidentReportingCulture</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#PublicKey -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PublicKey">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Key"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PublicKey</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#PublicKeyInsfrastructure -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PublicKeyInsfrastructure">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecureCommunication"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">PublicKeyInsfrastructure</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#QuantumComputingThreat -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#QuantumComputingThreat">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#NoQuantumComputingResistantCryptography"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Cryptography"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#PeerToPeerNetwork"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BlockchainApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appeared</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#QuantumResistantCryptography -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#QuantumResistantCryptography">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#NoQuantumComputingResistantCryptography"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">QuantumResistantCryptography</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#RemoteOperation -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#RemoteOperation">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#FundTransfer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Trading"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RemoteOperation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Repudiation -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Repudiation">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#IneffectiveLogging"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingAccessControl"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TraditionalApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitigated</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#RequestsFiltering -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#RequestsFiltering">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingRequestsFiltering"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">RequestsFiltering</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SecureCommunication -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecureCommunication">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#InsecureTransmissionOfData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingRequestsFiltering"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SecureCommunication</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityAwareness -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityAwareness">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#LackOfAwarness"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SecurityAwareness</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#constraintOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Security criteria is a constraint on business assets and characterize a security need which are expressed as confidentiality, integrity and availability of business assets.</rdfs:comment>
+        <rdfs:label>SecurityCriteria</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurosysPrimusX -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurosysPrimusX">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SecurosysPrimusX</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessage"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeConfirmation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeMatching"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SenderEngine</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Server -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Server">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeConfirmation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeMatching"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Server</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SharingFullContentWithValidatingNotaries -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SharingFullContentWithValidatingNotaries">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Consensus"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Notary"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SharingFullContentWithValidatingNotaries</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContract -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContract">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionState"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionValidation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">SmartContract</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContractThreat -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContractThreat">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneSmartContract"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Ledger"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotary"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SmartContract"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">BlockchainApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Appeared</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Spoofing -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Spoofing">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#InsecureTransmissionOfData"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingAccessControl"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingCommunicationProtocol"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TraditionalApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitigated</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#StaffSecurityTraining -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#StaffSecurityTraining">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImproveSecurityUnderstanding"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StaffSecurityTraining</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#StateReference -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#StateReference">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionState"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StateReference</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#StatisticalZeroKnowledge -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#StatisticalZeroKnowledge">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ZeroKnowledgeProof"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">StatisticalZeroKnowledge</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Asset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <owl:disjointWith rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Systems assets are the component or part of an information system, valuable to the organization since it supports business assets.</rdfs:comment>
+        <rdfs:label>SystemAsset</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Tampering -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Tampering">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ErrorProneValidationOfData"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#InsecureTransmissionOfData"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#MissingAccessControl"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom>
+                    <owl:Class>
+                        <owl:unionOf rdf:parseType="Collection">
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Database"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessageEngine"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#SenderEngine"/>
+                            <rdf:Description rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+                        </owl:unionOf>
+                    </owl:Class>
+                </owl:someValuesFrom>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <terms:isPartOf rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TraditionalApplication</terms:isPartOf>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mitigated</rdfs:seeAlso>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Threat">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#exploits"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#targets"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A threat is an incident initiated by a threat agent using an attack method to target one or more IS assets by exploiting their vulnerabilities.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Threat</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeConfirmation -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeConfirmation">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TradeConfirmation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TradeData</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeDetail">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#ImportMessage"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeData"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TradeDetail</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeExecution -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeExecution">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#FundTransfer"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Trading"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TradeExecution</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeMatching -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeMatching">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TradeMatching</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Trading -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Trading">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Trading</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Transaction">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Counterparty"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Transaction</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionContent -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionContent">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Confidentiality"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TransactionContent</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionState -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionState">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Availability"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TransactionState</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionTearOff -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionTearOff">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#LinkingUserAccountWithTransactionID"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SharingFullContentWithValidatingNotaries"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TransactionTearOff</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionValidation -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TransactionValidation">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#BusinessAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#hasConstraint"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TransactionValidation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#TrustedExecutionEnvironment -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#TrustedExecutionEnvironment">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotariesConsumeState"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">TrustedExecutionEnvironment</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#UnauthorizedRemoteOperation -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#UnauthorizedRemoteOperation">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#AccessRight"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#RemoteOperation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#TradeExecution"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Integrity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">UnauthorizedRemoteOperation</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#UniquenessConsensus -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#UniquenessConsensus">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Consensus"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">UniquenessConsensus</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#User -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#User">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#CorDappService"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#DigitalAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">User</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#UserSecurityPolicy -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#UserSecurityPolicy">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityAwareness"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">UserSecurityPolicy</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Utimaco -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Utimaco">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#HardwareSecurityModule"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Utimaco</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ValidatingNotary -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ValidatingNotary">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Notary"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#supports"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Counterparty"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ValidatingNotary</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ValidityConsensus -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ValidityConsensus">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Consensus"/>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ValidityConsensus</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Vulnerability">
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#characteristicOf"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SystemAsset"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#negates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#SecurityCriteria"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010"/>
+        <dc:isReferencedBy rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A vulnerability is the characteristic of an IS asset or group of IS assets that exposes a weakness or flaw in terms of security.</rdfs:comment>
+        <rdfs:label>Vulnerability</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#ZeroKnowledgeProof -->
+
+    <owl:Class rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#ZeroKnowledgeProof">
+        <rdfs:subClassOf rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#Countermeasure"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#mitigates"/>
+                <owl:someValuesFrom rdf:resource="https://mmisw.org/ont/~mubashar/CordaSecOnt#NonValidatingNotariesConsumeState"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ZeroKnowledgeProof</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Dublin_core -->
+
+    <owl:NamedIndividual rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dublin_core">
+        <CordaSecOnt:Link rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://www.dublincore.org/specifications/dublin-core/dcmi-terms</CordaSecOnt:Link>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Specification of all metadata terms maintained by the Dublin Core Metadata Initiative.</rdfs:comment>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dublin core</rdfs:label>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010 -->
+
+    <owl:NamedIndividual rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Dubois2010">
+        <CordaSecOnt:Authors rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Éric Dubois, Patrick Heymans, Nicolas Mayer, Raimundas Matulevičius</CordaSecOnt:Authors>
+        <CordaSecOnt:DOI rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://doi.org/10.1007/978-3-642-12544-7_16</CordaSecOnt:DOI>
+        <CordaSecOnt:Pages rdf:datatype="http://www.w3.org/2001/XMLSchema#string">289-306</CordaSecOnt:Pages>
+        <CordaSecOnt:Publisher rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Springer Berlin Heidelberg</CordaSecOnt:Publisher>
+        <CordaSecOnt:Title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A Systematic Approach to Define the Domain of Information System Security Risk Management</CordaSecOnt:Title>
+        <CordaSecOnt:Type rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Book chapter</CordaSecOnt:Type>
+        <CordaSecOnt:Year rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2010</CordaSecOnt:Year>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A Systematic Approach to Define the Domain of Information System Security Risk Management</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reference</rdfs:seeAlso>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017 -->
+
+    <owl:NamedIndividual rdf:about="https://mmisw.org/ont/~mubashar/CordaSecOnt#Matulevicius2017">
+        <CordaSecOnt:Authors rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raimundas Matulevičius</CordaSecOnt:Authors>
+        <CordaSecOnt:DOI rdf:datatype="http://www.w3.org/2001/XMLSchema#string">https://doi.org/10.1007/978-3-319-61717-6</CordaSecOnt:DOI>
+        <CordaSecOnt:Pages rdf:datatype="http://www.w3.org/2001/XMLSchema#string">218</CordaSecOnt:Pages>
+        <CordaSecOnt:Publisher rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Springer International Publishing</CordaSecOnt:Publisher>
+        <CordaSecOnt:Title rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fundamentals of Secure System Modelling</CordaSecOnt:Title>
+        <CordaSecOnt:Type rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Book</CordaSecOnt:Type>
+        <CordaSecOnt:Year rdf:datatype="http://www.w3.org/2001/XMLSchema#int">2017</CordaSecOnt:Year>
+        <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Fundamentals of Secure System Modelling</rdfs:label>
+        <rdfs:seeAlso rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reference</rdfs:seeAlso>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi -->
+

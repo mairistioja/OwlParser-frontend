@@ -124,3 +124,8 @@ footer > a {
 .srmMappingList > .MuiListItem-container:hover {
   background-color: rgb(209, 242, 253);
 }
+
+.srmMappingList {
+  height: 100%;
+  overflow: auto;
+}

@@ -73,7 +73,16 @@ const SrmMappingPage = ({
 
   return (
     <>
-      <h1 style={{ marginLeft: "16px" }}>{heading}</h1>
+      <h1 style={{
+        paddingLeft: "16px",
+        paddingTop: "0.5rem",
+        paddingBottom: "0.5rem",
+        position: "sticky",
+        top: "40pt",
+        backgroundColor: "white",
+        zIndex: 10,
+        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
+        }}>{heading}</h1>
       <List dense={true} className="srmMappingList">
         {Object.entries(mapping)
           .sort(([lhsSrmId, lhsId], [rhsSrmId, rhsId]) => {
@@ -137,17 +146,23 @@ const SrmMappingPage = ({
       {selectDialogProps !== null && (
         <SrmMappingSelectDialog {...selectDialogProps} />
       )}
-      <Button
-        variant="contained"
-        disabled={Object.keys(mapping).length <= 0}
-        onClick={() => onDone(mapping)}
-        sx={{ m: 2 }}
-      >
-        {doneButtonLabel}
-      </Button>
-      <Button variant="outlined" onClick={onCancel}>
-        {cancelButtonLabel}
-      </Button>
+      <div style={{ position: "sticky",
+      bottom: "20pt",
+      backgroundColor: "white",
+      zIndex: 10,
+      boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+        <Button
+          variant="contained"
+          disabled={Object.keys(mapping).length <= 0}
+          onClick={() => onDone(mapping)}
+          sx={{ m: 2 }}
+        >
+          {doneButtonLabel}
+        </Button>
+        <Button variant="outlined" onClick={onCancel}>
+          {cancelButtonLabel}
+        </Button>
+      </div>
     </>
   );
 };
