@@ -76,10 +76,7 @@ const Sidebar = ({ model }) => {
 };
 
 Sidebar.propTypes = {
-  model: PropTypes.shape({
-    blockchainAppIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    traditionalAppIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-  }),
+  model: PropTypes.object.isRequired
 };
 
 export default Sidebar;

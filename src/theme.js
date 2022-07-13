@@ -1,18 +1,28 @@
-import { createTheme } from "@mui/material/styles";
+import React from "react";
+import { createTheme, ThemeProvider, Theme } from "@mui/material/styles";
+import { CssBaseline } from "@mui/material";
+import PropTypes from 'prop-types';
 
-export const owlTheme = createTheme({
+const owlTheme = createTheme({
   components: {
-    MuiButton: {
+  /*  MuiButton: {
       styleOverrides: {
         root: {
           fontSize: "1rem",
         },
       },
-    },
-    MuiPaper: {
+    }, */
+    /* MuiPaper: {
       styleOverrides: {
         root: {
           marginBottom: 0,
+        },
+      },
+    }, */
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          fontSize: ".8rem",
         },
       },
     },
@@ -41,3 +51,17 @@ export const owlTheme = createTheme({
     },
   },
 });
+
+const ThemeWrapper = ({children}) => (
+  <ThemeProvider theme={owlTheme}>
+    {/* <CssBaseline /> */}
+    { children }
+  </ThemeProvider>
+);
+
+ThemeWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+
+export default ThemeWrapper;

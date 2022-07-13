@@ -1,11 +1,9 @@
 import "./App.css";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ContentWrapper from "./components/ContentWrapper";
-import LandingPage from "./components/LandingPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { BrowserRouter } from "react-router-dom";
 import {
   simplifyTriples,
   extractSrmIdsByType,
@@ -14,6 +12,11 @@ import {
 } from "./parsing";
 import SrmMappingPage from "./components/SrmMappingPage";
 import { srmClasses, srmRelations } from "./srm";
+import LoadingContainer from "./components/LoadingContainer";
+import { Snackbar } from "@mui/material";
+import { RdfXmlParser } from "rdfxml-streaming-parser";
+import { ReadableWebToNodeStream } from "readable-web-to-node-stream";
+import { ActiveClassIdContext } from "./ActiveClassIdContext";
 
 // Copied from https://usehooks.com/useLocalStorage/
 function useLocalStorage(key, initialValue) {
@@ -62,12 +65,93 @@ const App = () => {
   const [savedState, setSavedState] = useLocalStorage("savedState", {
     currentActivity: "loadFile",
   });
+  const activeClassIdState = useState("");
+  const [activeClassId, setActiveClassId] = activeClassIdState;
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const setTriples = (triples) => {
+  function parseStream(readableWebStream, onSuccess, onFailure, autoMap = false) {
+    const readableNodeStream = new ReadableWebToNodeStream(readableWebStream);
+    const rdfXmlParser = new RdfXmlParser();
+
+    const triples = [];
+    rdfXmlParser
+      .import(readableNodeStream)
+      .on("data", (quad) => {
+        triples.push({
+          subject: quad.subject,
+          predicate: quad.predicate,
+          object: quad.object,
+        });
+      })
+      .on("error", (error) => {
+        setErrorMessage(`Failed to parse given file: ${error}`);
+        onFailure();
+      })
+      .on("end", () => {
+        onSuccess();
+        setTriples(triples, autoMap);
+      });
+  }
+
+  function handleUpload(fileList, onSuccess, onFailure) {
+    if (fileList.length <= 0) return;
+    console.assert(fileList.length === 1);
+    const file = fileList[0];
+    const maxSize = 1024 * 1024 * 20;
+    if (file.size > maxSize) {
+      setErrorMessage(`File "${file.name}" is larger than ${maxSize} bytes!`);
+      onFailure();
+      return;
+    }
+
+    parseStream(file.stream(), onSuccess, onFailure);
+  }
+
+  function handleIriDownload(iriToDownload, onSuccess, onFailure, autoMap = false) {
+    console.debug(`Downloading: ${iriToDownload}`);
+    fetch(iriToDownload, {
+      method: "GET",
+      headers: { Accept: "application/rdf+xml,*/*" },
+    })
+      .then((response) => {
+        if (!response.ok)
+          throw new Error(
+            `Server returned failure status: ${response.status} ${response.statusText}`
+          );
+        return response.body;
+      })
+      .then((bodyStream) => parseStream(bodyStream, onSuccess, onFailure, autoMap))
+      .catch((error) => {
+        setErrorMessage(
+          `Fetching ontology from given IRI failed: ${error.message}`
+        );
+        onFailure();
+      });
+  }
+
+  const guessSrmRelationOwlIds = (srmTypes) =>
+    Object.entries(srmRelations).reduce(
+      (ids, [srmId, srmRelation]) => {
+        if (srmRelation.guessRegex !== null) {
+          for (const propertyId of srmTypes.objectPropertyIds) {
+            if (
+              !Object.values(ids).includes(propertyId) &&
+              srmRelation.guessRegex.test(propertyId)
+            ) {
+              return { ...ids, [srmId]: propertyId };
+            }
+          }
+        }
+        return { ...ids, [srmId]: "" };
+      },
+      {}
+    );
+
+  const setTriples = (triples, autoMap) => {
     const [srmTypes, nonSrmTypes, nonTypeTriples] = extractSrmIdsByType(
       simplifyTriples(triples)
     );
-    setSavedState({
+    let newState = {
       currentActivity: "mapSrmClasses",
       srmTypes,
       nonSrmTypes,
@@ -86,7 +170,21 @@ const App = () => {
         },
         {}
       ),
-    });
+    };
+    if (autoMap) {
+      setActiveClassId("");
+      newState = {
+        ...newState,
+        currentActivity: "browse",
+        srmRelationOwlIds: guessSrmRelationOwlIds(newState.srmTypes),
+        ...buildModel(
+          newState.srmTypes,
+          newState.nonTypeTriples,
+          newState.srmClassOwlIds
+        ),
+      };
+    }
+    setSavedState(newState);
   };
 
   const completeSrmClassOwlIds = (srmClassOwlIds) => {
@@ -96,28 +194,14 @@ const App = () => {
       ...savedState,
       currentActivity: "mapSrmRelations",
       srmClassOwlIds,
-      srmRelationOwlIds: Object.entries(srmRelations).reduce(
-        (ids, [srmId, srmRelation]) => {
-          if (srmRelation.guessRegex !== null) {
-            for (const propertyId of savedState.srmTypes.objectPropertyIds) {
-              if (
-                !Object.values(ids).includes(propertyId) &&
-                srmRelation.guessRegex.test(propertyId)
-              ) {
-                return { ...ids, [srmId]: propertyId };
-              }
-            }
-          }
-          return { ...ids, [srmId]: "" };
-        },
-        {}
-      ),
+      srmRelationOwlIds: guessSrmRelationOwlIds(savedState.srmTypes),
     });
   };
 
   const completeSrmRelationOwlIds = (srmRelationOwlIds) => {
     console.assert(savedState.currentActivity === "mapSrmRelations");
     console.debug("SRM relation mapping done!", srmRelationOwlIds);
+    setActiveClassId("");
     setSavedState({
       ...savedState,
       currentActivity: "browse",
@@ -135,33 +219,52 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
-      <Header />
+    <ActiveClassIdContext.Provider value={activeClassIdState}>
+      <Header
+        showMenu={savedState.currentActivity !== "loadFile"}
+        loadingPage={true}
+        handleIriDownload={handleIriDownload}
+        handleUpload={handleUpload}/>
       {savedState.currentActivity === "loadFile" ? (
-        <LandingPage setTriples={setTriples} />
+        <div style={{ marginTop: "6rem" }}>
+          <LoadingContainer
+            loadingPage={true}
+            handleIriDownload={handleIriDownload}
+            handleUpload={handleUpload}
+            />
+        </div>
       ) : savedState.currentActivity === "mapSrmClasses" ? (
         <SrmMappingPage
           heading="Map SRM classes"
           ids={savedState.srmTypes.classIds.filter((id) => !owlIdIsBlank(id))}
           initialMapping={savedState.srmClassOwlIds}
-          doneButtonLabel="Continue"
+          onNext={completeSrmClassOwlIds}
           onCancel={resetApp}
-          onDone={completeSrmClassOwlIds}
+          nextButtonLabel="Next"
         />
       ) : savedState.currentActivity === "mapSrmRelations" ? (
         <SrmMappingPage
           heading="Map SRM relations"
           ids={savedState.srmTypes.objectPropertyIds}
           initialMapping={savedState.srmRelationOwlIds}
-          doneButtonLabel="Continue"
+          onBack={() => setSavedState({
+            ...savedState,
+            currentActivity: "mapSrmClasses"
+          })}
+          onNext={completeSrmRelationOwlIds}
           onCancel={resetApp}
-          onDone={completeSrmRelationOwlIds}
+          nextButtonLabel="Finish"
         />
       ) : (
         <ContentWrapper model={savedState} onClose={resetApp} />
       )}
+      <Snackbar
+        open={errorMessage !== ""}
+        onClose={() => setErrorMessage("")}
+        message={errorMessage}
+      />
       <Footer />
-    </BrowserRouter>
+    </ActiveClassIdContext.Provider>
   );
 };
 

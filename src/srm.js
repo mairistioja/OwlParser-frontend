@@ -1,49 +1,83 @@
-function srmClass(name, guessRegex, needMapping = true) {
-  return { name, guessRegex, needMapping };
+function srmClass(name, tooltip, guessRegex, needMapping = true) {
+  return { name, tooltip, guessRegex, needMapping };
 }
 
 export const srmClasses = {
   // Risk treatment related:
   riskTreatment: srmClass(
     "Risk treatment",
+    "A risk treatment is the decision to handle detected risks",
     /^[^#]*#(sec(urity)?[ _]*)?(risk[ _]*)?treatment$/i
   ),
   securityRequirement: srmClass(
     "Security Requirement",
+    "A security requirement is the elaboration of a decision to mitigate the risk",
     /^[^#]*#(sec(urity)?[ _]*)?req(uirement)?$/i
   ),
   control: srmClass(
     "Countermeasure",
+    "Countermeasures are instruments for enhancing security",
     /^[^#]*#(sec(urity)?[ _]*)?(control|countermeasure)$/i
   ),
   // Risk related:
-  risk: srmClass("Risk", /^[^#]*#(sec(urity)?[ _]*)?risk$/i),
-  event: srmClass("Event", /^[^#]*#(sec(urity)?[ _]*)?event$/i),
-  impact: srmClass("Impact", /^[^#]*#(sec(urity)?[ _]*)?impact$/i),
-  threat: srmClass("Threat", /^[^#]*#(sec(urity)?[ _]*)?threat$/i),
+  risk: srmClass(
+    "Risk",
+    "A risk is the combination of one or more vulnerabilities and a threat which leads to adverse impact to the assets",
+    /^[^#]*#(sec(urity)?[ _]*)?risk$/i
+  ),
+  event: srmClass(
+    "Event",
+    "An event is the combination of a threat and one or more vulnerabilities",
+    /^[^#]*#(sec(urity)?[ _]*)?event$/i
+  ),
+  impact: srmClass(
+    "Impact",
+    "An impact describes the consequence of a risk in a case when the threat is carried out",
+    /^[^#]*#(sec(urity)?[ _]*)?impact$/i
+  ),
+  threat: srmClass(
+    "Threat",
+    "A threat describes a possible attack or security breach which might extend to damaging the assets",
+    /^[^#]*#(sec(urity)?[ _]*)?threat$/i
+  ),
   vulnerability: srmClass(
     "Vulnerability",
+    "A vulnerability is a weakness or a flaw of an information system asset",
     /^[^#]*#(sec(urity)?[ _]*)?vuln(erability)?$/i
   ),
   threatAgent: srmClass(
     "Threat agent",
+    "A threat agent may harm the infosystem assets",
     /^[^#]*#(sec(urity)?[ _]*)?(threat[ _]*)?agent$/i
   ),
   attackMethod: srmClass(
     "Attack method",
+    "An attack method is a means how a threat agent executes a threat",
     /^[^#]*#(sec(urity)?[ _]*)?attack[ _]*method$/i
   ),
   // Asset related:
   securityCriterion: srmClass(
     "Security criteria",
+    "Security criteria describe the security needs of a business assets",
     /^[^#]*#(sec(urity)?[ _]*)?criteri(a|on)$/i
   ),
-  asset: srmClass("Asset", null, false), // no mapping
+  asset: srmClass(
+    "Asset",
+    "Assets can be anything that has an importance to the organization in terms of attaining its objectives",
+    null, // no guessRegex
+    false // no mapping
+  ),
   informationSystemAsset: srmClass(
     "System asset",
+    "A system asset is a part of the information system that supports business asset",
     /^[^#]*#(is|(information[ _]*)?system)[ _]*asset$/i
   ),
-  businessAsset: srmClass("Business asset", /^[^#]*#business[ _]*asset$/i),
+  businessAsset: srmClass(
+    "Business asset",
+    "A business asset is a resource such as information, processes, capabilities, and skills" +
+    " that is valuable for the organization",
+    /^[^#]*#business[ _]*asset$/i
+  ),
 };
 
 /**

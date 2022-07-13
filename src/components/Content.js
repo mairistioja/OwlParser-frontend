@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { owlIdIsBlank } from "../parsing";
 import { srmClasses, srmRelations } from "../srm.js";
 import { minimizeOwlId } from "../misc.js";
@@ -8,6 +7,7 @@ import ClassLink from "./ClassLink";
 import { IconButton, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { PropTypes } from "prop-types";
+import { ActiveClassIdContext } from "../ActiveClassIdContext";
 
 const classHierachyContains = (classId, hierarchyArray) => {
   const toExamine = [...hierarchyArray];
@@ -131,145 +131,133 @@ function renderTargetClass(target, model, expandVulnerabilityMitigations) {
 }
 
 const Content = ({ model, onClose }) => {
-  const { hash } = useLocation();
-  const [activeClassId, setActiveClassId] = useState("");
-
-  useEffect(() => {
-    if (hash.startsWith("#id:")) {
-      const classIdCandidate = hash.slice(4);
-      setActiveClassId(
-        model.srmTypes.classIds.includes(classIdCandidate)
-          ? classIdCandidate
-          : ""
-      );
-    } else if (hash.length > 0) {
-      console.warn("Unsupported URL fragment!");
-    }
-  }, [hash, model.srmTypes.classIds]);
-
   return (
-    <div id="contentContainer">
-      <div id="ontologyHeader">
-        <div id="metadata">
-          <h3>{model.metadata.title}</h3>
-          <p>by {model.metadata.creator}</p>
-        </div>
-        <Tooltip title="Close current ontology">
-          <IconButton onClick={onClose} aria-label="close">
-            <CloseIcon />
-          </IconButton>
-        </Tooltip>
-      </div>
-      {activeClassId.length === 0 ? (
-        "No class selected"
-      ) : (
-        <>
-          <div id="content">
-            <h3 id="classTitle">{minimizeOwlId(activeClassId, model)}</h3>
-            <h3>Derivations:</h3>
-            {model.classDerivationChains[activeClassId].map((chain, index) => (
-              <div key={index}>
-                {["informationSystemAsset", "businessAsset"].includes(chain[0])
-                  ? renderDerivationChain(
-                      ["asset", ...chain, activeClassId],
-                      model
-                    )
-                  : renderDerivationChain([...chain, activeClassId], model)}
-              </div>
-            ))}
-            {model.subClasses[activeClassId].length > 0 && (
-              <>
-                <h3>Subclasses:</h3>
-                <ul>
-                  {model.subClasses[activeClassId].map((subclass, index) => (
-                    <li key={index}>
-                      <ClassLink
-                        classId={subclass}
-                        model={model}
-                        renderTypes={false}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-            <h3>Relations:</h3>
-            {model.classRelations[activeClassId].length <= 0 ? (
-              <p>No known relations</p>
-            ) : (
-              <ul>
-                {model.classRelations[activeClassId].map((relation, index) => {
-                  return (
-                    <li key={index}>
-                      {renderRelationItemHead(relation.propertyId, model)}
-                      <ul>
-                        <li>
-                          {renderTargetClass(
-                            relation.targetClass,
-                            model,
-                            isThreat(activeClassId, model)
-                          )}
+    <ActiveClassIdContext.Consumer>
+      {([activeClassId, setActiveClassId]) => (
+        <div id="contentContainer">
+          <div id="ontologyHeader">
+            <div id="metadata">
+              <h3>{model.metadata.title}</h3>
+              <p>by {model.metadata.creator}</p>
+            </div>
+            <Tooltip title="Close current ontology">
+              <IconButton onClick={onClose} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
+          </div>
+          {activeClassId.length === 0 ? (
+            "No class selected"
+          ) : (
+            <>
+              <div id="content">
+                <h3 id="classTitle">{minimizeOwlId(activeClassId, model)}</h3>
+                <h3>Derivations:</h3>
+                {model.classDerivationChains[activeClassId].map((chain, index) => (
+                  <div key={index}>
+                    {["informationSystemAsset", "businessAsset"].includes(chain[0])
+                      ? renderDerivationChain(
+                          ["asset", ...chain, activeClassId],
+                          model
+                        )
+                      : renderDerivationChain([...chain, activeClassId], model)}
+                  </div>
+                ))}
+                {model.subClasses[activeClassId].length > 0 && (
+                  <>
+                    <h3>Subclasses:</h3>
+                    <ul>
+                      {model.subClasses[activeClassId].map((subclass, index) => (
+                        <li key={index}>
+                          <ClassLink
+                            classId={subclass}
+                            model={model}
+                            renderTypes={false}
+                          />
                         </li>
-                      </ul>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-            <h3>Also used in:</h3>
-            {model.classUsedInRelations[activeClassId].length <= 0 ? (
-              <p>No known relations</p>
-            ) : (
-              <ul>
-                {model.classUsedInRelations[activeClassId].map(
-                  ({ classId, relation }, index) => {
-                    return (
-                      <li key={index}>
-                        <ClassLink classId={classId} model={model} />:
-                        <ul>
-                          <li>
-                            {renderRelationItemHead(relation.propertyId, model)}
+                      ))}
+                    </ul>
+                  </>
+                )}
+                <h3>Relations:</h3>
+                {model.classRelations[activeClassId].length <= 0 ? (
+                  <p>No known relations</p>
+                ) : (
+                  <ul>
+                    {model.classRelations[activeClassId].map((relation, index) => {
+                      return (
+                        <li key={index}>
+                          {renderRelationItemHead(relation.propertyId, model)}
+                          <ul>
+                            <li>
+                              {renderTargetClass(
+                                relation.targetClass,
+                                model,
+                                isThreat(activeClassId, model)
+                              )}
+                            </li>
+                          </ul>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+                <h3>Also used in:</h3>
+                {model.classUsedInRelations[activeClassId].length <= 0 ? (
+                  <p>No known relations</p>
+                ) : (
+                  <ul>
+                    {model.classUsedInRelations[activeClassId].map(
+                      ({ classId, relation }, index) => {
+                        return (
+                          <li key={index}>
+                            <ClassLink classId={classId} model={model} />:
                             <ul>
                               <li>
-                                {renderTargetClass(
-                                  relation.targetClass,
-                                  model,
-                                  isThreat(activeClassId, model)
-                                )}
+                                {renderRelationItemHead(relation.propertyId, model)}
+                                <ul>
+                                  <li>
+                                    {renderTargetClass(
+                                      relation.targetClass,
+                                      model,
+                                      isThreat(activeClassId, model)
+                                    )}
+                                  </li>
+                                </ul>
                               </li>
                             </ul>
                           </li>
-                        </ul>
-                      </li>
-                    );
-                  }
+                        );
+                      }
+                    )}
+                  </ul>
                 )}
-              </ul>
-            )}
-            <h3>Other</h3>
-            {activeClassId in model.unhandledTriples &&
-            model.unhandledTriples[activeClassId].length > 0
-              ? model.unhandledTriples[activeClassId].map((elem, index) => (
-                  <ul key={index}>
-                    <li>
-                      {elem.predicateId}
-                      <ul>
+                <h3>Other</h3>
+                {activeClassId in model.unhandledTriples &&
+                model.unhandledTriples[activeClassId].length > 0
+                  ? model.unhandledTriples[activeClassId].map((elem, index) => (
+                      <ul key={index}>
                         <li>
-                          {elem.objectId in model.subClasses ? (
-                            <ClassLink classId={elem.objectId} model={model} />
-                          ) : (
-                            elem.objectId
-                          )}
+                          {elem.predicateId}
+                          <ul>
+                            <li>
+                              {elem.objectId in model.subClasses ? (
+                                <ClassLink classId={elem.objectId} model={model} />
+                              ) : (
+                                elem.objectId
+                              )}
+                            </li>
+                          </ul>
                         </li>
                       </ul>
-                    </li>
-                  </ul>
-                ))
-              : "Nothing to show here"}
-          </div>
-        </>
+                    ))
+                  : "Nothing to show here"}
+              </div>
+            </>
+          )}
+        </div>
       )}
-    </div>
+    </ActiveClassIdContext.Consumer>
   );
 };
 
@@ -285,38 +273,7 @@ const relationProp = PropTypes.exact({
 });
 
 Content.propTypes = {
-  model: PropTypes.shape({
-    srmTypes: PropTypes.shape({
-      classIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired,
-    metadata: PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      creator: PropTypes.string.isRequired,
-    }).isRequired,
-    classDerivationChains: PropTypes.objectOf(
-      PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
-    ).isRequired,
-    subClasses: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
-      .isRequired,
-    classRelations: PropTypes.objectOf(PropTypes.arrayOf(relationProp))
-      .isRequired,
-    classUsedInRelations: PropTypes.objectOf(
-      PropTypes.arrayOf(
-        PropTypes.exact({
-          classId: PropTypes.string.isRequired,
-          relation: relationProp,
-        })
-      )
-    ).isRequired,
-    unhandledTriples: PropTypes.objectOf(
-      PropTypes.arrayOf(
-        PropTypes.exact({
-          predicateId: PropTypes.string.isRequired,
-          objectId: PropTypes.string.isRequired,
-        })
-      )
-    ),
-  }).isRequired,
+  model: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 

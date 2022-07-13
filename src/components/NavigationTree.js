@@ -10,7 +10,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { srmClasses } from "../srm";
 import ClassLink from "./ClassLink";
 import { PropTypes } from "prop-types";
-import { InputAdornment } from "@mui/material";
+import { InputAdornment, Tooltip } from "@mui/material";
 import { minimizeOwlId } from "../misc";
 
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
@@ -41,10 +41,11 @@ export const NavigationTree = ({ model }) => {
         nodeId: `id:${node.id}`,
       };
     } else {
-      itemProperties = {
-        label: node.label + numItemsText(node.children.length),
-        nodeId: `category:${node.nodeId}`,
-      };
+      let label = node.label + numItemsText(node.children.length);
+      if ("tooltip" in node) {
+        label = (<Tooltip title={node.tooltip} disableInteractive><span>{label}</span></Tooltip>);
+      }
+      itemProperties = { label, nodeId: `category:${node.nodeId}` };
     }
     return { ...itemProperties, key: itemProperties.nodeId };
   }
@@ -53,13 +54,14 @@ export const NavigationTree = ({ model }) => {
       key in model.srmClassHierarchy ? model.srmClassHierarchy[key] : [];
     return {
       label: srmClasses[key].name,
+      tooltip: srmClasses[key].tooltip,
       nodeId: `category:${key}`,
       children: itemArray,
       canBeHidden: itemArray.length <= 0,
     };
   }
 
-  const generateCategory = ({ label, nodeId, children }) => {
+  const generateCategory = ({ label, nodeId, children, tooltip }) => {
     let canBeHidden = true;
     for (const child of children) {
       if ("canBeHidden" in child) {
@@ -72,13 +74,14 @@ export const NavigationTree = ({ model }) => {
         break;
       }
     }
-    return { label, nodeId, children, canBeHidden };
+    return { label, nodeId, children, canBeHidden, tooltip };
   };
 
   const tree = [
     generateCategory({
       label: "Risk-related concepts",
       nodeId: "risk_related",
+      tooltip: "Risk-related concepts present definitions for risks",
       children: [
         generateCategoryTree("attackMethod"),
         generateCategoryTree("event"),
@@ -92,6 +95,8 @@ export const NavigationTree = ({ model }) => {
     generateCategory({
       label: "Risk-treatment-related concepts",
       nodeId: "risk_treatment_related",
+      tooltip: "Risk treatment-related concepts depict which decisions, requirements " +
+      "and other means should be specified and implemented for the sake of mitigating potential risks",
       children: [
         generateCategoryTree("control"),
         generateCategoryTree("riskTreatment"),
@@ -101,10 +106,13 @@ export const NavigationTree = ({ model }) => {
     generateCategory({
       label: "Asset-related concepts",
       nodeId: "asset_related",
+      tooltip: "Asset-related concepts define which assets need protection and by which criteria " +
+      "to ensure the safety of the assets",
       children: [
         generateCategory({
-          label: "Asset",
+          label: srmClasses.asset.name,
           nodeId: "asset",
+          tooltip: srmClasses.asset.tooltip,
           children: [
             generateCategoryTree("businessAsset"),
             generateCategoryTree("informationSystemAsset"),
@@ -211,13 +219,7 @@ const classHierarchyNode = {
 classHierarchyNode.children = PropTypes.arrayOf(classHierarchyNode).isRequired;
 
 NavigationTree.propTypes = {
-  model: PropTypes.shape({
-    srmClassHierarchy: PropTypes.objectOf(PropTypes.arrayOf(classHierarchyNode))
-      .isRequired,
-    otherClassHierarchy: PropTypes.objectOf(
-      PropTypes.arrayOf(classHierarchyNode)
-    ).isRequired,
-  }).isRequired,
+  model: PropTypes.object.isRequired,
 };
 
 export default NavigationTree;

@@ -1,10 +1,10 @@
-import { Tooltip } from "@mui/material";
-import { NavLink } from "react-router-dom";
+import { Button, Tooltip } from "@mui/material";
 import React, { Fragment } from "react";
 import { PropTypes } from "prop-types";
 import { minimizeOwlId } from "../misc";
 import { SrmClassText } from "./SrmClassText";
 import SRM from "../srm";
+import { ActiveClassIdContext } from "../ActiveClassIdContext";
 
 const ClassLink = ({ classId, model, renderTypes = true }) => {
   const types = [];
@@ -42,25 +42,23 @@ const ClassLink = ({ classId, model, renderTypes = true }) => {
   }
   return (
     <>
-      <Tooltip title={classId} disableInteractive>
-        <NavLink to={{ hash: `#id:${classId}` }}>
-          {minimizeOwlId(classId, model)}
-        </NavLink>
-      </Tooltip>{" "}
-      {types.length > 0 && <>({types})</>}
+      <ActiveClassIdContext.Consumer>
+        {([activeClassId, setActiveClassId]) => (
+          <Tooltip title={classId} disableInteractive>
+            <span className="classLink" onClick={() => setActiveClassId(classId)}>
+              {minimizeOwlId(classId, model)}
+            </span>
+          </Tooltip>
+        )}
+      </ActiveClassIdContext.Consumer>{" "}{types.length > 0 && <>({types})</>}
     </>
   );
 };
 
 ClassLink.propTypes = {
   classId: PropTypes.string.isRequired,
-  model: PropTypes.shape({
-    classDerivationChains: PropTypes.objectOf(
-      PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
-    ).isRequired,
-    srmClassOwlIds: PropTypes.objectOf(PropTypes.string).isRequired,
-  }).isRequired,
-  renderTypes: PropTypes.boolean,
+  model: PropTypes.object.isRequired,
+  renderTypes: PropTypes.bool,
 };
 
 export default ClassLink;

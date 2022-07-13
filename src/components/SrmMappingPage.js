@@ -18,10 +18,10 @@ const SrmMappingPage = ({
   ids,
   heading,
   initialMapping,
+  onBack,
+  onNext,
   onCancel,
-  onDone,
-  doneButtonLabel = "Done",
-  cancelButtonLabel = "Cancel",
+  nextButtonLabel = "Next",
 }) => {
   const [mapping, setMapping] = useState(initialMapping);
   useEffect(() => {
@@ -151,16 +151,19 @@ const SrmMappingPage = ({
       backgroundColor: "white",
       zIndex: 10,
       boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}>
+        <Button variant="outlined" sx={{ m: 2 }} onClick={onBack} disabled={!onBack}>
+          Back
+        </Button>
         <Button
           variant="contained"
           disabled={Object.keys(mapping).length <= 0}
-          onClick={() => onDone(mapping)}
+          onClick={() => onNext(mapping)}
           sx={{ m: 2 }}
         >
-          {doneButtonLabel}
+          {nextButtonLabel}
         </Button>
-        <Button variant="outlined" onClick={onCancel}>
-          {cancelButtonLabel}
+        <Button variant="outlined" sx={{ m: 2 }} onClick={onCancel}>
+          Cancel
         </Button>
       </div>
     </>
@@ -171,10 +174,10 @@ SrmMappingPage.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   heading: PropTypes.string.isRequired,
   initialMapping: PropTypes.objectOf(PropTypes.string).isRequired,
+  onBack: PropTypes.func,
+  onNext: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
-  onDone: PropTypes.func.isRequired,
-  doneButtonLabel: PropTypes.string,
-  cancelButtonLabel: PropTypes.string,
+  nextButtonLabel: PropTypes.string,
 };
 
 export default SrmMappingPage;

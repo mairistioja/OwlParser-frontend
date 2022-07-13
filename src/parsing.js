@@ -246,7 +246,7 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
         continue;
       }
     }
-    if (predicate === "http://purl.org/dc/elements/1.1/domain") {
+    if (predicate === "http://purl.org/dc/elements/1.1/domain" || predicate === "http://purl.org/dc/terms/isPartOf") {
       if (object === "BlockchainApplication") {
         blockchainAppIds.push(subject);
         continue;
