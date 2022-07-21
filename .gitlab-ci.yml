@@ -1,6 +1,13 @@
-image: node:16-alpine
+stages:
+  - pages
+  - build
+  - k8s-secret-create
+  - deploy
 
 pages:
+  stage: pages
+  image: node:16-alpine
+
   script:
     - npm install
     - npm run build
@@ -9,3 +16,10 @@ pages:
   artifacts:
     paths:
       - public
+
+include:
+  - project: "templates/kaniko-build"
+    file: ".gitlab-ci-kaniko-build.yml"
+  - project: "templates/argocd-deploy"
+    file: ".gitlab-ci-argocd-deploy.yml"
+
