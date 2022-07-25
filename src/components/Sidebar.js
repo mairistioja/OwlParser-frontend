@@ -25,8 +25,8 @@ const Sidebar = ({ model }) => {
       <TabContext value={tabSelected} id="sidebar">
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleTabChange}>
-            <Tab label="SRM" value="tree" />
-            <Tab label="Threats by category" value="lists" />
+            <Tab sx={{fontWeight: 700}} label="SRM" value="tree" />
+            <Tab sx={{fontWeight: 700}} label="Threats by category" value="lists" />
           </TabList>
         </Box>
         <TabPanel value="tree" sx={{ padding: "8px" }}>
@@ -49,7 +49,7 @@ const Sidebar = ({ model }) => {
               <ul style={{ listStyleType: "none" }}>
                 {model.blockchainAppIds.map((id, index) => (
                   <li key={index}>
-                    <ClassLink classId={id} model={model} renderTypes={false} />
+                    <ClassLink classId={id} model={model} />
                   </li>
                 ))}
               </ul>
@@ -63,7 +63,7 @@ const Sidebar = ({ model }) => {
               <ul style={{ listStyleType: "none" }}>
                 {model.traditionalAppIds.map((id, index) => (
                   <li key={index}>
-                    <ClassLink classId={id} model={model} renderTypes={false} />
+                    <ClassLink classId={id} model={model} />
                   </li>
                 ))}
               </ul>

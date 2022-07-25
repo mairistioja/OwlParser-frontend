@@ -1,3 +1,31 @@
+import { RdfXmlParser } from "rdfxml-streaming-parser";
+import { ReadableWebToNodeStream } from "readable-web-to-node-stream";
+import { insertToSortedArray, insertToSortedUniqueArray } from "./misc";
+import { srmClasses, srmRelations } from "./srm";
+
+export function parseStream(readableWebStream, onSuccess, onFailure) {
+  const readableNodeStream = new ReadableWebToNodeStream(readableWebStream);
+  const rdfXmlParser = new RdfXmlParser();
+
+  const triples = [];
+  rdfXmlParser
+    .import(readableNodeStream)
+    .on("data", (quad) => {
+      triples.push({
+        subject: quad.subject,
+        predicate: quad.predicate,
+        object: quad.object,
+      });
+    })
+    .on("error", (error) => {
+      setErrorMessage(`Failed to parse given file: ${error}`);
+      onFailure();
+    })
+    .on("end", () => {
+      onSuccess(triples);
+    });
+}
+
 /**
  * Returns if the class is an anonymous class
  * @param {string} id
@@ -7,12 +35,16 @@ export function owlIdIsBlank(id) {
   return id.startsWith("_:");
 }
 
+export const owlIdIsRegular = (id) => !owlIdIsBlank(id);
+
+export const hasRegularOwlId = (o) => owlIdIsRegular(o.id);
+
 /**
  * Simplifies an array of triple objects to an array of 3-element arrays of IDs
  * @param {Object[]} triples of object, predicate and subject
  * @returns {Object[]} simplifiedTriples TODO fix
  */
-export function simplifyTriples(triples) {
+function simplifyTriples(triples) {
   /**
    * Returns a name for a triple element
    * @param {Object} node
@@ -27,58 +59,103 @@ export function simplifyTriples(triples) {
     }
     return "_:" + node.value;
   }
-  return triples.map((t) => [t.object, t.predicate, t.subject].map(nodeName));
+  return triples.reduce((result, t) => {
+    const t2 = [t.object, t.predicate, t.subject].map(nodeName);
+    // Don't allow duplicates:
+    if (result.every((tr) => (tr[0] !== t2[0]) || (tr[1] !== t2[1]) || (tr[2] !== t2[2])))
+      result.push(t2);
+    return result;
+  }, []);
 }
 
-export function extractSrmIdsByType(simplifiedTriples) {
+function extractIdsByType(simplifiedTriples) {
   const classIds = []; // [id]
   const restrictionIds = []; // [id]
   const objectPropertyIds = []; // [id]
   const namedIndividualIds = []; // [id]
   const annotationPropertyIds = []; // [id]
   const ontologyIds = []; // [id]
-  const nonSrmTypes = {}; // id -> [id]
+  //const unknownTypes = {}; // id -> [id]
   const nonTypeTriples = simplifiedTriples.filter((t) => {
     const [object, predicate, subject] = t;
     if (predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#type") {
       if (object === "http://www.w3.org/2002/07/owl#Class") {
-        classIds.push(subject);
+        insertToSortedUniqueArray(classIds, subject);
       } else if (object === "http://www.w3.org/2002/07/owl#Restriction") {
-        restrictionIds.push(subject);
+        insertToSortedUniqueArray(restrictionIds, subject);
       } else if (object === "http://www.w3.org/2002/07/owl#ObjectProperty") {
-        objectPropertyIds.push(subject);
+        insertToSortedUniqueArray(objectPropertyIds, subject);
       } else if (object === "http://www.w3.org/2002/07/owl#NamedIndividual") {
-        namedIndividualIds.push(subject);
+        insertToSortedUniqueArray(namedIndividualIds, subject);
       } else if (
         object === "http://www.w3.org/2002/07/owl#AnnotationProperty"
       ) {
-        annotationPropertyIds.push(subject);
+        insertToSortedUniqueArray(annotationPropertyIds, subject);
       } else if (object === "http://www.w3.org/2002/07/owl#Ontology") {
-        ontologyIds.push(subject);
-      } else {
-        if (subject in nonSrmTypes) {
-          nonSrmTypes[subject].push(object);
+        insertToSortedUniqueArray(ontologyIds, subject);
+      } /*else {
+        if (subject in unknownTypes) {
+          insertToSortedUniqueArray(unknownTypes[subject], object);
         } else {
-          nonSrmTypes[subject] = [object];
+          unknownTypes[subject] = [object];
         }
-      }
+      }*/
       return false;
+    }
+    if (predicate === "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
+      insertToSortedUniqueArray(classIds, subject);
+      insertToSortedUniqueArray(classIds, object);
     }
     return true;
   });
-  for (const id in nonSrmTypes) nonSrmTypes[id].sort();
   return [
     {
-      classIds: classIds.sort(),
-      restrictionIds: restrictionIds.sort(),
-      objectPropertyIds: objectPropertyIds.sort(),
-      namedIndividualIds: namedIndividualIds.sort(),
-      annotationPropertyIds: annotationPropertyIds.sort(),
-      ontologyIds: ontologyIds.sort(),
+      classIds,
+      restrictionIds,
+      objectPropertyIds,
+      namedIndividualIds,
+      annotationPropertyIds,
+      ontologyIds,
     },
-    nonSrmTypes,
+    //unknownTypes,
     nonTypeTriples,
   ];
+}
+
+function guessSrmClassOwlIds(knownTypes) {
+  return Object.entries(srmClasses).reduce(
+    (ids, [srmId, srmClass]) => {
+      if (!srmClass.needMapping) return ids;
+      for (const classId of knownTypes.classIds) {
+        if (
+          !Object.values(ids).includes(classId) &&
+          srmClass.guessRegex.test(classId)
+        )
+          return { ...ids, [srmId]: classId };
+      }
+      return { ...ids, [srmId]: "" };
+    },
+    {}
+  );
+}
+
+function guessSrmRelationOwlIds(knownTypes) {
+  return Object.entries(srmRelations).reduce(
+   (ids, [srmId, srmRelation]) => {
+     if (srmRelation.guessRegex !== null) {
+       for (const propertyId of knownTypes.objectPropertyIds) {
+         if (
+           !Object.values(ids).includes(propertyId) &&
+           srmRelation.guessRegex.test(propertyId)
+         ) {
+           return { ...ids, [srmId]: propertyId };
+         }
+       }
+     }
+     return { ...ids, [srmId]: "" };
+   },
+   {}
+ );
 }
 
 /**
@@ -88,7 +165,6 @@ export function extractSrmIdsByType(simplifiedTriples) {
  * @returns {{id: string, creator: string, title: string,
  *            comment: string, versionIRI: string, versionInfo: string}} parsedTriples.metadata
  * @returns {Object} parsedTriples.srmClassHierarchy, srmClass -> [{ontId, children: [x]} : x]
- * @returns {Object[]} parsedTriples.otherClassHierarchy, [{ontId, children: [x]} : x]
  * @returns {Object} parsedTriples.classRelations, id -> [{propertyId, targetClass}]
  * @returns {Object} parsedTriples.classUsedInRelations, targetClassId -> [{classId, relation}]
  * @returns {Object} parsedTriples.classDerivationChains, class -> [[srmClass, ...ancestorIds]]
@@ -96,9 +172,11 @@ export function extractSrmIdsByType(simplifiedTriples) {
  * @returns {string[]} parsedTriples.blockchainAppIds
  * @returns {string[]} parsedTriples.traditionalAppIds
  */
-export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
+export function buildModel(triples) {
+  const [knownTypes, nonTypeTriples] = extractIdsByType(simplifyTriples(triples));
+
   const metadata = {
-    id: srmTypes.ontologyIds[srmTypes.ontologyIds.length - 1],
+    id: knownTypes.ontologyIds[knownTypes.ontologyIds.length - 1],
     creator: "",
     title: "",
     comment: "",
@@ -106,19 +184,19 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
     versionInfo: "",
   };
   const subClassOf = {}; // id -> [id]
-  for (const id of srmTypes.classIds) {
+  for (const id of knownTypes.classIds) {
     subClassOf[id] = [];
   }
   const subClasses = {}; // id -> [id]
-  for (const id of srmTypes.classIds) {
+  for (const id of knownTypes.classIds) {
     subClasses[id] = [];
   }
   const restrictionOnPropertyIds = {}; // id -> [id]
-  for (const id of srmTypes.restrictionIds) {
+  for (const id of knownTypes.restrictionIds) {
     restrictionOnPropertyIds[id] = [];
   }
   const restrictionSomeValuesFromIds = {}; // id -> [id]
-  for (const id of srmTypes.restrictionIds) {
+  for (const id of knownTypes.restrictionIds) {
     restrictionSomeValuesFromIds[id] = [];
   }
   const unionOfList = {}; // id -> id
@@ -127,37 +205,38 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
   const listRestIds = {}; // id -> id?
   const traditionalAppIds = []; // [id]
   const blockchainAppIds = []; // [id]
-  const unhandledTriples = {}; // subjectId -> [{predicateId, objectId}]
-  for (const [object, predicate, subject] of nonTypeTriples) {
+  const unhandledTriples = {}; // id -> [{objectId, predicateId, subjectId}]
+  for (const nonTypeTriple of nonTypeTriples) {
+    const [object, predicate, subject] = nonTypeTriple;
     if (predicate === "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
       console.assert(
-        srmTypes.classIds.includes(object) ||
-          srmTypes.restrictionIds.includes(object)
-      );
+        knownTypes.classIds.includes(object)
+        || knownTypes.restrictionIds.includes(object),
+        nonTypeTriple);
       console.assert(
-        srmTypes.classIds.includes(subject) ||
-          srmTypes.restrictionIds.includes(subject)
-      );
+        knownTypes.classIds.includes(subject)
+        || knownTypes.restrictionIds.includes(subject),
+        nonTypeTriple);
       if (subject in subClassOf) {
-        subClassOf[subject].push(object);
+        insertToSortedUniqueArray(subClassOf[subject], object);
       } else {
         subClassOf[subject] = [object];
       }
       if (object in subClasses) {
-        subClasses[object].push(subject);
+        insertToSortedUniqueArray(subClasses[object], subject);
       } else {
         subClasses[object] = [subject];
       }
       continue;
     }
     if (predicate === "http://www.w3.org/2002/07/owl#onProperty") {
-      console.assert(srmTypes.objectPropertyIds.includes(object));
+      console.assert(knownTypes.objectPropertyIds.includes(object), nonTypeTriple);
       console.assert(
-        srmTypes.classIds.includes(subject) ||
-          srmTypes.restrictionIds.includes(subject)
-      );
+        knownTypes.classIds.includes(subject)
+        || knownTypes.restrictionIds.includes(subject),
+        nonTypeTriple);
       if (subject in restrictionOnPropertyIds) {
-        restrictionOnPropertyIds[subject].push(object);
+        insertToSortedUniqueArray(restrictionOnPropertyIds[subject], object);
       } else {
         restrictionOnPropertyIds[subject] = [object];
       }
@@ -165,27 +244,27 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
     }
     if (predicate === "http://www.w3.org/2002/07/owl#someValuesFrom") {
       console.assert(
-        srmTypes.classIds.includes(subject) ||
-          srmTypes.restrictionIds.includes(subject)
-      );
+        knownTypes.classIds.includes(subject)
+        || knownTypes.restrictionIds.includes(subject),
+        nonTypeTriple);
       console.assert(
-        srmTypes.classIds.includes(object) ||
-          srmTypes.restrictionIds.includes(object)
-      );
+        knownTypes.classIds.includes(object)
+        || knownTypes.restrictionIds.includes(object),
+        nonTypeTriple);
       if (subject in restrictionSomeValuesFromIds) {
-        restrictionSomeValuesFromIds[subject].push(object);
+        insertToSortedUniqueArray(restrictionSomeValuesFromIds[subject], object);
       } else {
         restrictionSomeValuesFromIds[subject] = [object];
       }
       continue;
     }
     if (predicate === "http://www.w3.org/2002/07/owl#unionOf") {
-      console.assert(!(subject in unionOfList));
+      console.assert(!(subject in unionOfList), nonTypeTriple);
       unionOfList[subject] = object;
       continue;
     }
     if (predicate === "http://www.w3.org/2002/07/owl#intersectionOf") {
-      console.assert(!(subject in intersectionOfList));
+      console.assert(!(subject in intersectionOfList), nonTypeTriple);
       intersectionOfList[subject] = object;
       continue;
     }
@@ -248,20 +327,25 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
     }
     if (predicate === "http://purl.org/dc/elements/1.1/domain" || predicate === "http://purl.org/dc/terms/isPartOf") {
       if (object === "BlockchainApplication") {
-        blockchainAppIds.push(subject);
-        continue;
+        insertToSortedUniqueArray(blockchainAppIds, subject);
+        //continue;
       }
-      if (object === "TraditionalApplication") {
-        traditionalAppIds.push(subject);
-        continue;
+      else if (object === "TraditionalApplication") {
+        insertToSortedUniqueArray(traditionalAppIds, subject);
+        //continue;
       }
     }
     console.debug("unhandled triple", object, predicate, subject);
-    const pred = { predicateId: predicate, objectId: object };
+    const pred = { objectId: object, predicateId: predicate, subjectId: subject };
     if (subject in unhandledTriples) {
       unhandledTriples[subject].push(pred);
     } else {
       unhandledTriples[subject] = [pred];
+    }
+    if (object in unhandledTriples) {
+      unhandledTriples[object].push(pred);
+    } else {
+      unhandledTriples[object] = [pred];
     }
   }
 
@@ -277,117 +361,45 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
   }
 
   const unionOf = {}; // id -> [id]
-  for (const id of srmTypes.classIds) {
-    unionOf[id] = [];
-  }
-  for (const id in unionOfList) {
-    unionOf[id] = lists[unionOfList[id]];
-  }
   const intersectionOf = {}; // id -> [id]
-  for (const id of srmTypes.classIds) {
+  for (const id of knownTypes.classIds) {
+    unionOf[id] = [];
     intersectionOf[id] = [];
   }
+  for (const id of knownTypes.restrictionIds) {
+    unionOf[id] = [];
+    intersectionOf[id] = [];
+  }
+  for (const id in unionOfList) {
+    unionOf[id] = lists[unionOfList[id]].reduce((r, v) => insertToSortedUniqueArray(r, v), []);
+  }
   for (const id in intersectionOfList) {
-    intersectionOf[id] = lists[intersectionOfList[id]];
+    intersectionOf[id] = lists[intersectionOfList[id]].reduce((r, v) => insertToSortedUniqueArray(r, v), []);
   }
 
-  const srmClassIds = []; // [id]
-  let srmClassHierarchy = {}; // srmClass -> [{ontId, children: [x]} : x]
-  let classDerivationChains = {}; // class -> [[srmClass, ...ancestorIds]]
-  for (const classId of srmTypes.classIds) {
+  const classHierarchies = {}; // id -> ({id, children: [x], parents: [x]} : x)
+  for (const classId of knownTypes.classIds) {
+    classHierarchies[classId] = {id: classId};
+  }
+  for (const classId of knownTypes.classIds) {
+    const hierarchy = classHierarchies[classId];
+    hierarchy.children = subClasses[classId].map(id => classHierarchies[id]);
+    hierarchy.parents = subClassOf[classId].map(id => classHierarchies[id]);
+    hierarchy.regularChildren = hierarchy.children.filter(hasRegularOwlId);
+    hierarchy.regularParents = hierarchy.parents.filter(hasRegularOwlId);
+  }
+  const classDerivationChains = {}; // id -> [[...ancestors : x]]
+  for (const classId of knownTypes.classIds) {
     classDerivationChains[classId] = [];
-  }
-  for (const srmClass in srmClassOwlIds) {
-    const ontClass = srmClassOwlIds[srmClass];
-    if (ontClass.length <= 0) continue; // Ignore unsupported
-
-    srmClassIds.push(ontClass);
-    srmClassHierarchy[srmClass] = [];
-    let parentArray = srmClassHierarchy[srmClass];
-    if (ontClass in subClasses) {
-      // Only if present
-      let toExamine = []; // [{parentArray, id, derivationChain: [srmClass, ...ancestorIds]}]
-      for (const subClassId of subClasses[ontClass]) {
-        srmClassIds.push(subClassId);
-        toExamine.push({
-          parentArray: parentArray,
-          id: subClassId,
-          derivationChain: [srmClass],
-        });
-      }
-      while (toExamine.length > 0) {
-        const { parentArray, id, derivationChain } = toExamine.shift();
-        const elem = { id, children: [] };
-        for (const subClassId of subClasses[id]) {
-          srmClassIds.push(subClassId);
-          toExamine.push({
-            parentArray: elem.children,
-            id: subClassId,
-            derivationChain: [...derivationChain, id],
-          });
-        }
-        parentArray.push(elem);
-        classDerivationChains[id].push(derivationChain);
-      }
-    }
-  }
-
-  const topLevelNonSrmClassIds = []; // [id]
-  for (const classId of srmTypes.classIds) {
-    // Ignore anonymous classes:
-    if (owlIdIsBlank(classId)) continue;
-
-    // Ignore if SRM class:
-    if (srmClassIds.includes(classId)) continue;
-
-    // Ignore if not top-level:
-    let isSubclass = false;
-    for (const superClassId of subClassOf[classId]) {
-      // TODO: Buggy check to ignore restrictions and such:
-      if (!owlIdIsBlank(superClassId)) {
-        isSubclass = true;
-        break;
-      }
-    }
-    if (isSubclass) continue;
-
-    // Hack to ignore, if it looks like "asset":
-    if (/^[^#]*#asset$/i.test(classId)) {
-      let stillLooksLikeAsset = true;
-      for (const subClassId of subClasses[classId]) {
-        if (
-          subClassId != srmClassOwlIds["informationSystemAsset"] &&
-          subClassId != srmClassOwlIds["businessAsset"]
-        ) {
-          stillLooksLikeAsset = false;
-        }
-      }
-      if (stillLooksLikeAsset) continue;
-    }
-
-    topLevelNonSrmClassIds.push(classId);
-  }
-  const otherClassHierarchy = []; // [{ontId, children: [x]} : x]
-  for (const classId of topLevelNonSrmClassIds) {
-    const toExamine = [
-      {
-        parentArray: otherClassHierarchy,
-        id: classId,
-        derivationChain: [],
-      },
-    ];
+    const toExamine = classHierarchies[classId].regularParents.map(parent => [parent]);
     while (toExamine.length > 0) {
-      const { parentArray, id, derivationChain } = toExamine.shift();
-      const elem = { id, children: [] };
-      for (const subClassId of subClasses[id]) {
-        toExamine.push({
-          parentArray: elem.children,
-          id: subClassId,
-          derivationChain: [...derivationChain, id],
-        });
+      const chain = toExamine.shift();
+      const regularParents = chain[0].regularParents;
+      if (regularParents.length <= 0) {
+        classDerivationChains[classId].push(chain);
+      } else {
+        toExamine.push(...regularParents.map(parent => [parent, ...chain]));
       }
-      parentArray.push(elem);
-      classDerivationChains[id].push(derivationChain);
     }
   }
 
@@ -402,12 +414,12 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
   }
 
   let classRelations = {}; // id -> [{propertyId, targetClass}]
-  for (const classId of srmTypes.classIds) {
+  for (const classId of knownTypes.classIds) {
     if (owlIdIsBlank(classId)) continue;
     classRelations[classId] = [];
     let allSuperClasses = [...subClassOf[classId]];
     for (let i = 0; i < allSuperClasses.length; ++i) {
-      if (srmTypes.restrictionIds.includes(allSuperClasses[i])) {
+      if (knownTypes.restrictionIds.includes(allSuperClasses[i])) {
         console.assert(
           restrictionOnPropertyIds[allSuperClasses[i]].length === 1
         );
@@ -418,10 +430,10 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
         const targetClassId =
           restrictionSomeValuesFromIds[allSuperClasses[i]][0];
 
-        classRelations[classId].push({
+        insertToSortedArray(classRelations[classId], {
           propertyId,
           targetClass: propertyClass(targetClassId),
-        });
+        }, (a, b) => [a.propertyId, a.targetClass.classId] < [b.propertyId, b.targetClass.classId]);
       }
       // "recurse" only for classes, not on restrictions:
       if (allSuperClasses[i] in subClassOf) {
@@ -436,7 +448,7 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
 
   // Construct inverse of classRelations
   let classUsedInRelations = {}; // targetClassId -> [{classId, relation}]
-  for (const targetClassId of srmTypes.classIds) {
+  for (const targetClassId of knownTypes.classIds) {
     classUsedInRelations[targetClassId] = [];
     for (const classId in classRelations) {
       for (const relation of classRelations[classId]) {
@@ -444,10 +456,11 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
         do {
           const first = classesToExamine.shift();
           if (first.classId === targetClassId) {
-            classUsedInRelations[targetClassId].push({
+            insertToSortedArray(classUsedInRelations[targetClassId], {
               classId,
               relation,
-            });
+            }, (a, b) => [a.classId, a.relation.propertyId, a.relation.targetClass.classId]
+                       < [b.classId, b.relation.propertyId, b.relation.targetClass.classId]);
             break;
           }
           if ("unionOf" in first) classesToExamine.push(...first.unionOf);
@@ -465,15 +478,16 @@ export function buildModel(srmTypes, nonTypeTriples, srmClassOwlIds) {
   // TODO individuals
 
   return {
+    knownTypes,
     metadata,
-    srmClassHierarchy,
-    otherClassHierarchy,
+    classHierarchies,
+    classDerivationChains,
     classRelations,
     classUsedInRelations,
-    classDerivationChains,
-    subClasses,
     blockchainAppIds,
     traditionalAppIds,
     unhandledTriples,
+    srmClassOwlIds: guessSrmClassOwlIds(knownTypes),
+    srmRelationOwlIds: guessSrmRelationOwlIds(knownTypes),
   };
 }

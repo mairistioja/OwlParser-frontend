@@ -1,21 +1,20 @@
 import React from "react";
 import Sidebar from "./Sidebar";
-import Content from "./Content";
+import MainView from "./MainView";
 import { PropTypes } from "prop-types";
-import Footer from "./Footer";
 
-const ContentWrapper = ({ model, onClose }) => {
+const BrowsingPage = ({ model, onClose }) => {
   return (
     <>
       <Sidebar model={model} />
-      <Content model={model} onClose={onClose} />
+      <MainView model={model} onClose={onClose} />
     </>
   );
 };
 
-ContentWrapper.propTypes = {
+BrowsingPage.propTypes = {
   model: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default ContentWrapper;
+export default BrowsingPage;

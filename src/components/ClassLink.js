@@ -1,64 +1,74 @@
-import { Button, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import React, { Fragment } from "react";
 import { PropTypes } from "prop-types";
 import { minimizeOwlId } from "../misc";
-import { SrmClassText } from "./SrmClassText";
 import SRM from "../srm";
 import { ActiveClassIdContext } from "../ActiveClassIdContext";
+import { insertToSortedUniqueArray } from "../misc";
+import { owlIdIsRegular } from "../parsing";
 
-const ClassLink = ({ classId, model, renderTypes = true }) => {
-  const types = [];
-  if (renderTypes) {
-    const ancestorIds = [
-      // also removes duplicates
-      ...new Set(model.classDerivationChains[classId].map((chain) => chain[0])),
-    ];
-    const srmClasses = [];
-    const others = [];
-    for (const ancestorId of ancestorIds) {
-      const container = ancestorId in SRM.srmClasses ? srmClasses : others;
-      container.push(ancestorId);
-    }
-    srmClasses.sort(
-      (lhs, rhs) => SRM.srmClasses[lhs].name < SRM.srmClasses[rhs].name
-    );
-    for (const srmClass of srmClasses) {
-      if (types.length > 0) types.push(", ");
-      types.push(
-        <Fragment key={srmClass}>
-          <SrmClassText srmClass={srmClass} model={model} />
-        </Fragment>
-      );
-    }
-    if (others.length > 0) {
-      others.sort();
-      if (types.length > 0) types.push(" and ");
-      types.push(
-        <Tooltip title={others.join(", ")} key={"other"} disableInteractive>
-          <span>{types.length > 0 ? "others" : "other"}</span>
-        </Tooltip>
-      );
-    }
-  }
+export const ClassLink = ({classId, model, ...props}) => {
   return (
-    <>
-      <ActiveClassIdContext.Consumer>
-        {([activeClassId, setActiveClassId]) => (
-          <Tooltip title={classId} disableInteractive>
-            <span className="classLink" onClick={() => setActiveClassId(classId)}>
-              {minimizeOwlId(classId, model)}
-            </span>
-          </Tooltip>
-        )}
-      </ActiveClassIdContext.Consumer>{" "}{types.length > 0 && <>({types})</>}
-    </>
+    <ActiveClassIdContext.Consumer>
+      {([activeClassId, setActiveClassId]) => {
+        let link = (
+          <span className="classLink" onClick={() => setActiveClassId(classId)}>
+            {minimizeOwlId(classId, model)}
+          </span>
+        );
+        if (!("tooltip" in props)) {
+          link = (<Tooltip title={classId} disableInteractive>{link}</Tooltip>);
+        } else if (props.tooltip) {
+          link = (<Tooltip title={props.tooltip} disableInteractive>{link}</Tooltip>);
+        }
+        return link;
+      }}
+    </ActiveClassIdContext.Consumer>
   );
 };
 
 ClassLink.propTypes = {
   classId: PropTypes.string.isRequired,
   model: PropTypes.object.isRequired,
-  renderTypes: PropTypes.bool,
+  tooltip: PropTypes.node,
 };
+
+export const ClassLinkWithSrmTypes = ({ classId, model, ...props }) => {
+  const types = [];
+  console.assert(classId in model.classDerivationChains, classId);
+  const srmClasses = model.classDerivationChains[classId].reduce(
+    (cs, chain) => {
+      for (const ancestor of chain)
+        if (owlIdIsRegular(ancestor.id))
+          for (const srmClass in model.srmClassOwlIds)
+            if (ancestor.id === model.srmClassOwlIds[srmClass])
+              insertToSortedUniqueArray(
+                cs,
+                srmClass,
+                (lhs, rhs) => SRM.srmClasses[lhs].name < SRM.srmClasses[rhs].name);
+      return cs;
+    }, []);
+  for (const srmClass of srmClasses) {
+    if (types.length > 0) types.push(", ");
+    const toolTip =
+      model.srmClassOwlIds[srmClass]
+        ? model.srmClassOwlIds[srmClass]
+        : `No known equivalent for SRM class "${srmClasses[srmClass].name}" in given ontology`;
+    types.push(
+      <Fragment key={srmClass}>
+        <Tooltip title={toolTip}>
+          <span>{srmClasses[srmClass].name}</span>
+        </Tooltip>
+      </Fragment>
+    );
+  }
+  return (
+    <>
+      <ClassLink classId={classId} model={model} {...props} />{" "}{types.length > 0 && <>({types})</>}
+    </>
+  );
+};
+
+ClassLinkWithSrmTypes.propTypes = { ...ClassLink.propTypes };
 
 export default ClassLink;
