@@ -1,29 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { owlIdIsBlank } from "../parsing";
 import { srmClasses, srmRelations } from "../srm.js";
 import { minimizeOwlId } from "../misc.js";
 import { SrmClassText } from "./SrmClassText";
-import ClassLink from "./ClassLink";
-import { IconButton, Tooltip } from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { PropTypes } from "prop-types";
 import { ActiveClassIdContext } from "../ActiveClassIdContext";
+import { ClassLink, ClassLinkWithSrmTypes } from "./ClassLink";
 
-const classHierachyContains = (classId, hierarchyArray) => {
-  const toExamine = [...hierarchyArray];
-  while (toExamine.length > 0) {
-    const first = toExamine.shift();
-    if (first.id === classId) return true;
-    toExamine.push(...first.children);
-  }
-  return false;
+const classHierachyContains = (classId, model, srmId) => {
+  const srmClassOwlId = model.srmClassOwlIds[srmId];
+  if (!srmClassOwlId)
+    return false;
+  return model.classDerivationChains[classId].some(
+    (chain) => chain.some(owlClass => owlClass.id == srmClassOwlId));
 };
 
 const isThreat = (classId, model) =>
-  classHierachyContains(classId, model.srmClassHierarchy["threat"]);
+  classHierachyContains(classId, model, "threat");
 
 const isVulnerability = (classId, model) =>
-  classHierachyContains(classId, model.srmClassHierarchy["vulnerability"]);
+  classHierachyContains(classId, model, "vulnerability");
 
 const vulnerabilityMitigations = (classId, model) => {
   const r = [];
@@ -31,7 +29,8 @@ const vulnerabilityMitigations = (classId, model) => {
     model.srmRelationOwlIds["securityRequirementMitigatesRisk"];
   for (const relation of model.classUsedInRelations[classId])
     if (relation.relation.propertyId === mitigatesPropertyId)
-      r.push(relation.classId);
+      if (!r.slice(-1).includes(relation.classId)) // r already sorted because relations are
+        r.push(relation.classId);
   return r;
 };
 
@@ -57,25 +56,41 @@ function renderRelationItemHead(propertyId, model) {
   );
 }
 
-function renderDerivationChain(chain, model) {
+function renderDerivationChain_(chain, model) {
   return (
     <ul>
       <li>
-        {chain[0] in srmClasses ? (
-          <Tooltip title={model.srmClassOwlIds[chain[0]]}>
-            <strong>{srmClasses[chain[0]].name}</strong>
-          </Tooltip>
-        ) : (
-          <ClassLink
-            classId={chain[0]}
-            model={model}
-            renderTypes={chain.length > 1}
-          />
-        )}
-        {chain.length > 1 && renderDerivationChain(chain.slice(1), model)}
+        {chain.length > 1
+         ? (
+          <>
+            <ClassLinkWithSrmTypes classId={chain[0].id} model={model} />
+            {renderDerivationChain_(chain.slice(1), model)}
+          </>)
+         : (<ClassLink classId={chain[0].id} model={model} />)}
       </li>
     </ul>
   );
+}
+
+function renderDerivationChain(chain, model) {
+  const renderedChain = renderDerivationChain_(chain, model);
+  // For assets show derivation from asset even if none in model
+  for (const subAsset of ["informationSystemAsset", "businessAsset"]) {
+    const subAssetOwlId = model.srmClassOwlIds[subAsset];
+    if (subAssetOwlId) {
+      if (chain[0].id === subAssetOwlId) {
+        return (
+          <ul>
+            <li>
+              <strong>{srmClasses["asset"].name}</strong>
+              {renderedChain}
+            </li>
+          </ul>
+        );
+      }
+    }
+  }
+  return renderedChain;
 }
 
 function renderTargetClass(target, model, expandVulnerabilityMitigations) {
@@ -104,7 +119,7 @@ function renderTargetClass(target, model, expandVulnerabilityMitigations) {
       return renderList("Complement of:", target.complementOf);
     }
   }
-  const classLink = <ClassLink classId={target.classId} model={model} />;
+  const classLink = <ClassLinkWithSrmTypes classId={target.classId} model={model} />;
   if (
     expandVulnerabilityMitigations &&
     isVulnerability(target.classId, model)
@@ -118,7 +133,7 @@ function renderTargetClass(target, model, expandVulnerabilityMitigations) {
             {vulnerabilityMitigations(target.classId, model).map(
               (id, index) => (
                 <li key={index}>
-                  <ClassLink classId={id} model={model} />
+                  <ClassLinkWithSrmTypes classId={id} model={model} />
                 </li>
               )
             )}
@@ -130,7 +145,7 @@ function renderTargetClass(target, model, expandVulnerabilityMitigations) {
   return classLink;
 }
 
-const Content = ({ model, onClose }) => {
+const MainView = ({ model, onClose }) => {
   return (
     <ActiveClassIdContext.Consumer>
       {([activeClassId, setActiveClassId]) => (
@@ -147,41 +162,39 @@ const Content = ({ model, onClose }) => {
             </Tooltip>
           </div>
           {activeClassId.length === 0 ? (
-            "No class selected"
+            <Box sx={{ p:2 }}>
+              No class selected
+            </Box>
           ) : (
             <>
               <div id="content">
                 <h3 id="classTitle">{minimizeOwlId(activeClassId, model)}</h3>
                 <h3>Derivations:</h3>
-                {model.classDerivationChains[activeClassId].map((chain, index) => (
-                  <div key={index}>
-                    {["informationSystemAsset", "businessAsset"].includes(chain[0])
-                      ? renderDerivationChain(
-                          ["asset", ...chain, activeClassId],
-                          model
-                        )
-                      : renderDerivationChain([...chain, activeClassId], model)}
-                  </div>
-                ))}
-                {model.subClasses[activeClassId].length > 0 && (
-                  <>
-                    <h3>Subclasses:</h3>
-                    <ul>
-                      {model.subClasses[activeClassId].map((subclass, index) => (
-                        <li key={index}>
-                          <ClassLink
-                            classId={subclass}
-                            model={model}
-                            renderTypes={false}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
+                {model.classDerivationChains[activeClassId].length > 0
+                 ? model.classDerivationChains[activeClassId].map((chain, index) => (
+                    <div key={index}>
+                      {renderDerivationChain([...chain, model.classHierarchies[activeClassId]], model)}
+                    </div>
+                  ))
+                 : (
+                    <p>
+                      <ClassLink classId={activeClassId} model={model} /> is a top-level class.
+                    </p>
+                  )
+                }
+                <h3>Subclasses:</h3>
+                <ul>
+                  {model.classHierarchies[activeClassId].regularChildren.length <= 0
+                   ? (<p>No subclasses.</p>)
+                   : model.classHierarchies[activeClassId].regularChildren.map((subclass, index) => (
+                      <li key={index}>
+                        <ClassLink classId={subclass.id} model={model} />
+                      </li>
+                    ))}
+                </ul>
                 <h3>Relations:</h3>
                 {model.classRelations[activeClassId].length <= 0 ? (
-                  <p>No known relations</p>
+                  <p>No known relations.</p>
                 ) : (
                   <ul>
                     {model.classRelations[activeClassId].map((relation, index) => {
@@ -204,14 +217,14 @@ const Content = ({ model, onClose }) => {
                 )}
                 <h3>Also used in:</h3>
                 {model.classUsedInRelations[activeClassId].length <= 0 ? (
-                  <p>No known relations</p>
+                  <p>No known relations.</p>
                 ) : (
                   <ul>
                     {model.classUsedInRelations[activeClassId].map(
                       ({ classId, relation }, index) => {
                         return (
                           <li key={index}>
-                            <ClassLink classId={classId} model={model} />:
+                            <ClassLinkWithSrmTypes classId={classId} model={model} />:
                             <ul>
                               <li>
                                 {renderRelationItemHead(relation.propertyId, model)}
@@ -233,25 +246,34 @@ const Content = ({ model, onClose }) => {
                   </ul>
                 )}
                 <h3>Other</h3>
-                {activeClassId in model.unhandledTriples &&
-                model.unhandledTriples[activeClassId].length > 0
-                  ? model.unhandledTriples[activeClassId].map((elem, index) => (
+                {!(activeClassId in model.unhandledTriples) || model.unhandledTriples[activeClassId].length <= 0
+                  ? (<p>No other relations.</p>)
+                  : model.unhandledTriples[activeClassId].map((elem, index) => (
                       <ul key={index}>
                         <li>
-                          {elem.predicateId}
+                        {elem.subjectId in model.classHierarchies ? (
+                          <ClassLinkWithSrmTypes classId={elem.subjectId} model={model} />
+                        ) : (
+                          elem.subjectId
+                        )}
                           <ul>
                             <li>
-                              {elem.objectId in model.subClasses ? (
-                                <ClassLink classId={elem.objectId} model={model} />
-                              ) : (
-                                elem.objectId
-                              )}
+                              {elem.predicateId}
+                              <ul>
+                                <li>
+                                  {elem.objectId in model.classHierarchies ? (
+                                    <ClassLinkWithSrmTypes classId={elem.objectId} model={model} />
+                                  ) : (
+                                    elem.objectId
+                                  )}
+                                </li>
+                              </ul>
                             </li>
                           </ul>
                         </li>
                       </ul>
                     ))
-                  : "Nothing to show here"}
+                }
               </div>
             </>
           )}
@@ -267,14 +289,9 @@ const propertyClassProp = {
 propertyClassProp.unionOf = PropTypes.arrayOf(propertyClassProp);
 propertyClassProp.intersectionOf = PropTypes.arrayOf(propertyClassProp);
 
-const relationProp = PropTypes.exact({
-  propertyId: PropTypes.string.isRequired,
-  targetClass: propertyClassProp,
-});
-
-Content.propTypes = {
+MainView.propTypes = {
   model: PropTypes.object.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default Content;
+export default MainView;

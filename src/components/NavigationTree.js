@@ -30,35 +30,52 @@ export const NavigationTree = ({ model }) => {
   }
   function treeItemPropertiesForNode(node) {
     let itemProperties;
-    if ("id" in node) {
+    if ("nodeId" in node) { // category
+      let label = node.label;
+      if ("id" in node) {
+        label = (
+          <ClassLink
+            classId={node.id}
+            model={model}
+            tooltip={<>{node.tooltip}<br/><br/>{node.id}</>} />
+        );
+      } else {
+        label = (
+          <Tooltip title={node.tooltip} disableInteractive>
+            <span>{label}</span>
+          </Tooltip>
+        );
+      }
+      label = (<>{label}{" " + numItemsText(node.children.length)}</>);
+      itemProperties = { label, nodeId: `category:${node.nodeId}` };
+    } else {
       itemProperties = {
         label: (
           <>
-            <ClassLink classId={node.id} model={model} renderTypes={false} />
+            <ClassLink classId={node.id} model={model} />
             {numItemsText(node.children.length)}
           </>
         ),
         nodeId: `id:${node.id}`,
       };
-    } else {
-      let label = node.label + numItemsText(node.children.length);
-      if ("tooltip" in node) {
-        label = (<Tooltip title={node.tooltip} disableInteractive><span>{label}</span></Tooltip>);
-      }
-      itemProperties = { label, nodeId: `category:${node.nodeId}` };
     }
     return { ...itemProperties, key: itemProperties.nodeId };
   }
   function generateCategoryTree(key) {
+    const srmClassOwlId = model.srmClassOwlIds[key];
     const itemArray =
-      key in model.srmClassHierarchy ? model.srmClassHierarchy[key] : [];
-    return {
+      (srmClassOwlId && srmClassOwlId in model.classHierarchies)
+      ? model.classHierarchies[srmClassOwlId].regularChildren
+      : [];
+    console.assert(itemArray !== undefined, key, srmClassOwlId, model.classHierarchies[srmClassOwlId]);
+    const tree = {
       label: srmClasses[key].name,
       tooltip: srmClasses[key].tooltip,
       nodeId: `category:${key}`,
       children: itemArray,
       canBeHidden: itemArray.length <= 0,
     };
+    return srmClassOwlId ? {...tree, id: srmClassOwlId} : tree;
   }
 
   const generateCategory = ({ label, nodeId, children, tooltip }) => {
@@ -196,19 +213,6 @@ export const NavigationTree = ({ model }) => {
       >
         {renderTree(tree)}
       </TreeView>
-      {/* <hr />
-      <TreeView
-        defaultCollapseIcon={<ExpandMore />}
-        defaultExpandIcon={<ChevronRight />}
-      >
-        {renderTree([
-          {
-            label: "Extra Details",
-            nodeId: "category:other",
-            children: model.otherClassHierarchy,
-          },
-        ])}
-      </TreeView> */}
     </>
   );
 };

@@ -1,10 +1,12 @@
+import React from "react";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Box, IconButton, Menu, MenuItem, Modal, Stack, Tooltip } from "@mui/material";
-import React from "react";
+import { Box, DialogContent, IconButton, Menu, MenuItem, Modal, Stack, Tooltip, Typography } from "@mui/material";
 import { ReactComponent as Logo } from "../assets/logo.svg";
 import { PropTypes } from "prop-types";
 import LoadingContainer from "./LoadingContainer";
+import { owl_samples } from "../samples";
+import HelpModalContent from "./HelpModalContent";
 
 const modalStyle = {
   position: 'absolute',
@@ -23,10 +25,17 @@ const Header = ({
     handleUpload
   }) => {
   const [openLoadingModal, setOpenLoadingModal] = React.useState(false);
-  const handleOpenLoadingModal = () => setOpenLoadingModal(true);
-  const handleCloseLoadingModal = () => setOpenLoadingModal(false);
   const [busy, setBusy] = React.useState(false);
   const [anchorMenuEl, setAnchorMenuEl] = React.useState(null);
+  const [openHelpModal, setOpenHelpModal] = React.useState(false);
+
+  const handleOpenLoadingModal = () => setOpenLoadingModal(true);
+
+  const handleCloseLoadingModal = () => setOpenLoadingModal(false);
+
+  const handleOpenHelpModal = () => setOpenHelpModal(true);
+
+  const handleCloseHelpModal = () => setOpenHelpModal(false);
 
   const handleClick = (event) => {
     setAnchorMenuEl(event.currentTarget);
@@ -34,7 +43,6 @@ const Header = ({
   const handleCloseMenu = () => {
     setAnchorMenuEl(null);
   };
-
 
   const reenableMenu = () => setBusy(false);
 
@@ -61,7 +69,7 @@ const Header = ({
           </IconButton>
         </Tooltip>}
         <Tooltip title="Help" sx={{pr: "1rem"}}>
-          <IconButton size="large" sx={{pr: "1rem"}}>
+          <IconButton size="large" sx={{pr: "1rem"}} onClick={handleOpenHelpModal}>
             <HelpOutlineIcon sx={{color:"white"}}/>
           </IconButton>
         </Tooltip>
@@ -105,15 +113,11 @@ const Header = ({
         <MenuItem onClick={handleOpenLoadingModal}>
           Load new ontology
         </MenuItem>
-        <MenuItem onClick={() => handleDownload("samples/healthont_v2.owl")}>
-          Open healthOnt.owl
-        </MenuItem>
-        <MenuItem onClick={() => handleDownload("samples/CordaSecOnt.owl")}>
-          Open CordaSecOnt.owl
-        </MenuItem>
-        <MenuItem onClick={() => handleDownload("samples/ULRO.owl")}>
-          Open ULRO.owl
-        </MenuItem>
+        {owl_samples.map((iri, index) => (
+          <MenuItem onClick={() => handleDownload(iri)} key={index}>
+            Open {iri.split("/").slice(-1)}
+          </MenuItem>)
+        )}
       </Menu>
       <Modal
         open={openLoadingModal}
@@ -125,8 +129,8 @@ const Header = ({
               handleIriDownload(
                 iri,
                 () => {
-                  handleCloseLoadingModal();
                   onSuccess();
+                  handleCloseLoadingModal();
                 },
                 onFailure)
             }
@@ -134,12 +138,20 @@ const Header = ({
               handleUpload(
                 fileList,
                 () => {
-                  handleCloseLoadingModal();
                   onSuccess();
+                  handleCloseLoadingModal();
                 },
                 onFailure
               )}/>
         </Box>
+      </Modal>
+      <Modal
+        open={openHelpModal}
+        onClose={handleCloseHelpModal}
+      >
+        <DialogContent>
+          <HelpModalContent modalStyle={modalStyle}/>
+        </DialogContent>
       </Modal>
     </header>
   );
