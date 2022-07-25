@@ -7,7 +7,8 @@ import { Box, IconButton, Tooltip } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { PropTypes } from "prop-types";
 import { ActiveClassIdContext } from "../ActiveClassIdContext";
-import { ClassLink, ClassLinkWithSrmTypes } from "./ClassLink";
+import { ClassLink } from "./ClassLink";
+import { ClassLinkWithSrmTypes } from "./ClassLinkWithSrmTypes";
 
 const classHierachyContains = (classId, model, srmId) => {
   const srmClassOwlId = model.srmClassOwlIds[srmId];
