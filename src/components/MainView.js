@@ -115,9 +115,10 @@ function renderTargetClass(target, model, expandVulnerabilityMitigations) {
       return renderList("Union of:", target.unionOf);
     } else if ("intersectionOf" in target) {
       return renderList("Intersection of:", target.intersectionOf);
-    } else {
-      console.assert("complementOf" in target);
+    } else if ("complementOf" in target) {
       return renderList("Complement of:", target.complementOf);
+    } else {
+      return <span>{"<UNSUPPORTED>"}</span>; // TODO relations
     }
   }
   const classLink = <ClassLinkWithSrmTypes classId={target.classId} model={model} />;
@@ -170,6 +171,16 @@ const MainView = ({ model, onClose }) => {
             <>
               <div id="content">
                 <h3 id="classTitle">{minimizeOwlId(activeClassId, model)}</h3>
+                {activeClassId in model.comments && (
+                  <>
+                    <h3>Comments:</h3>
+                    <ul>
+                      {model.comments[activeClassId].map((comment, index) => (
+                        <li key={index}>{comment}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
                 <h3>Derivations:</h3>
                 {model.classDerivationChains[activeClassId].length > 0
                  ? model.classDerivationChains[activeClassId].map((chain, index) => (
@@ -193,6 +204,16 @@ const MainView = ({ model, onClose }) => {
                       </li>
                     ))}
                 </ul>
+                {model.disjointsWith[activeClassId].length > 0 && (
+                  <>
+                    <h3>Disjoint with:</h3>
+                    <ul>
+                      {model.disjointsWith[activeClassId].map((id, index) => (
+                        <li key={index}><ClassLink classId={id} model={model} /></li>
+                      ))}
+                    </ul>
+                  </>
+                )}
                 <h3>Relations:</h3>
                 {model.classRelations[activeClassId].length <= 0 ? (
                   <p>No known relations.</p>
@@ -246,6 +267,20 @@ const MainView = ({ model, onClose }) => {
                     )}
                   </ul>
                 )}
+                {/* {activeClassId in model.seeAlso && (
+                  <>
+                    <h3>See also:</h3>
+                    <ul>
+                      {model.seeAlso[activeClassId].map((id, index) => (
+                        <li key={index}>
+                          {id in model.classHierarchies
+                           ? (<ClassLink classId={id} model={model} />)
+                           : id}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )} */}
                 <h3>Other</h3>
                 {!(activeClassId in model.unhandledTriples) || model.unhandledTriples[activeClassId].length <= 0
                   ? (<p>No other relations.</p>)
