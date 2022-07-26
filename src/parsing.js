@@ -183,6 +183,8 @@ export function buildModel(triples) {
     versionIRI: "",
     versionInfo: "",
   };
+  const comments = {}; // id -> [str]
+  //const seeAlso = {}; // id -> [id]
   const subClassOf = {}; // id -> [id]
   for (const id of knownTypes.classIds) {
     subClassOf[id] = [];
@@ -198,6 +200,17 @@ export function buildModel(triples) {
   const restrictionSomeValuesFromIds = {}; // id -> [id]
   for (const id of knownTypes.restrictionIds) {
     restrictionSomeValuesFromIds[id] = [];
+  }
+  const disjointsWith = {}; // id -> [id]
+  for (const id of knownTypes.classIds) {
+    disjointsWith[id] = [];
+  }
+  const complementsOf = {}; // id -> [id]
+  for (const id of knownTypes.classIds) {
+    complementsOf[id] = [];
+  }
+  for (const id of knownTypes.restrictionIds) {
+    complementsOf[id] = [];
   }
   const unionOfList = {}; // id -> id
   const intersectionOfList = {}; // id -> id
@@ -268,6 +281,18 @@ export function buildModel(triples) {
       intersectionOfList[subject] = object;
       continue;
     }
+    if (predicate === "http://www.w3.org/2002/07/owl#inverseOf") {
+      // TODO?
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#complementOf") {
+      insertToSortedUniqueArray(complementsOf[subject], object);
+      continue;
+    }
+    if (predicate === "http://www.w3.org/2002/07/owl#disjointWith") {
+      insertToSortedUniqueArray(disjointsWith[subject], object);
+      insertToSortedUniqueArray(disjointsWith[object], subject);
+      continue;
+    }
     if (predicate === "http://www.w3.org/1999/02/22-rdf-syntax-ns#first") {
       listFirstIds[subject] = object;
       continue;
@@ -283,12 +308,14 @@ export function buildModel(triples) {
     if (predicate === "http://www.w3.org/2000/01/rdf-schema#domain") {
       continue; /// TODO ignore?
     }
-    if (predicate === "http://www.w3.org/2002/07/owl#inverseOf") {
-      continue; /// TODO ignore?
-    }
-    if (predicate === "http://www.w3.org/2002/07/owl#disjointWith") {
-      continue; /// TODO ignore?
-    }
+    /* if (predicate === "http://www.w3.org/2000/01/rdf-schema#seeAlso") {
+      if (subject in seeAlso) {
+        insertToSortedUniqueArray(seeAlso[subject], object);
+      } else {
+        seeAlso[subject] = [object];
+      }
+      continue;
+    } */
     if (predicate === "http://purl.org/dc/elements/1.1/creator") {
       if (subject === metadata.id) {
         metadata.creator = object;
@@ -304,8 +331,14 @@ export function buildModel(triples) {
     if (predicate === "http://www.w3.org/2000/01/rdf-schema#comment") {
       if (subject === metadata.id) {
         metadata.comment = object;
-        continue;
+      } else {
+        if (subject in comments) {
+          comments[subject].push(object);
+        } else {
+          comments[subject] = [object];
+        }
       }
+      continue;
     }
     if (predicate === "http://www.w3.org/2000/01/rdf-schema#label") {
       if (subject === metadata.id) {
@@ -408,8 +441,10 @@ export function buildModel(triples) {
     let r = { classId };
     const u = unionOf[classId];
     const i = intersectionOf[classId];
+    const c = complementsOf[classId];
     if (u.length > 0) r.unionOf = u.map(propertyClass);
     if (i.length > 0) r.intersectionOf = i.map(propertyClass);
+    if (c.length > 0) r.complementOf = i.map(propertyClass);
     return r;
   }
 
@@ -474,12 +509,14 @@ export function buildModel(triples) {
   }
 
   // TODO equivalentClass https://www.w3.org/TR/owl-ref/#equivalentClass-def
-  // TODO disjointWith https://www.w3.org/TR/owl-ref/#disjointWith-def
   // TODO individuals
 
-  return {
+  const model = {
     knownTypes,
     metadata,
+    comments,
+    //seeAlso,
+    disjointsWith,
     classHierarchies,
     classDerivationChains,
     classRelations,
@@ -490,4 +527,6 @@ export function buildModel(triples) {
     srmClassOwlIds: guessSrmClassOwlIds(knownTypes),
     srmRelationOwlIds: guessSrmRelationOwlIds(knownTypes),
   };
+  console.debug(model);
+  return model;
 }
