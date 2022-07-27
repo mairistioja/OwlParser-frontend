@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owlparser
+  namespace: mai-owlparser
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: owlparser
+  template:
+    metadata:
+      labels:
+        app: owlparser
+    spec:
+      imagePullSecrets:
+        - name: owlparser-gitlab-regcred
+      containers:
+      - name: owlparser
+        image: gitlab.cs.ut.ee:5050/mai87/owlparser
+        ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: owlparser
+  namespace: mai-owlparser
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: owlparser
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: owlparser-ingress
+  namespace: mai-owlparser
+#  annotations:
+#    nginx.ingress.kubernetes.io/use-regex: "true"
+#    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: "owlparser.cs.ut.ee"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mai-owlparser
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - owlparser.cs.ut.ee
