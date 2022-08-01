@@ -51,7 +51,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: mai-owlparser
+            name: owlparser
             port:
               number: 80
   tls:
