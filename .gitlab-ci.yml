@@ -1,21 +1,7 @@
 stages:
-  - pages
   - build
   - k8s-secret-create
   - deploy
-
-pages:
-  stage: pages
-  image: node:16-alpine
-
-  script:
-    - npm install
-    - npm run build
-    - rm -rf public
-    - mv build public
-  artifacts:
-    paths:
-      - public
 
 include:
   - project: "templates/kaniko-build"
