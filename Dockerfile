@@ -6,5 +6,5 @@ RUN \
     && npm run build 
 
 FROM nginx:latest
-RUN sed -i "s/worker_processes\s*auto;/worker_processes 4;/g" /etc/nginx/nginx.conf
+RUN sed -i "s/worker_processes\s*auto;/worker_processes 2;/g" /etc/nginx/nginx.conf
 COPY --from=builder /owl/build /usr/share/nginx/html
