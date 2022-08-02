@@ -3,9 +3,8 @@ COPY . /owl/
 RUN \
     cd /owl \
     && npm install \
-    && npm run build \
-    && ls -la /etc/nginx \
-    && sed -i "s/worker_processes\s*auto;/worker_processes 4;/g" /etc/nginx/nginx.conf
+    && npm run build 
 
 FROM nginx:latest
+RUN sed -i "s/worker_processes\s*auto;/worker_processes 4;/g" /etc/nginx/nginx.conf
 COPY --from=builder /owl/build /usr/share/nginx/html
