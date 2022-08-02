@@ -1,10 +1,10 @@
 FROM node:16-alpine AS builder
 COPY . /owl/
+RUN npm ls react-dom
+RUN npm ls react-native
 RUN \
     cd /owl \
     && npm install \
-    && npm ls react-dom \
-    && npm ls react-native \
     && npm run build 
 
 FROM nginx:latest
