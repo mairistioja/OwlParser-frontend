@@ -4,8 +4,6 @@ RUN \
     cd /owl \
     && npm install \
     && npm run build 
-RUN cd /owl && npm ls react-dom
-RUN cd /owl && npm ls react-native
 
 FROM nginx:latest
 RUN sed -i "s/worker_processes\s*auto;/worker_processes 2;/g" /etc/nginx/nginx.conf
