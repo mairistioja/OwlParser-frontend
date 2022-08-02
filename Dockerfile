@@ -3,6 +3,8 @@ COPY . /owl/
 RUN \
     cd /owl \
     && npm install \
+    && npm ls react-dom \
+    && npm ls react-native \
     && npm run build 
 
 FROM nginx:latest
