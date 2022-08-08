@@ -35,7 +35,10 @@ const App = () => {
                   onSuccess();
                   setTriples(triples, false);
                 },
-                onFailure);
+                (msg) => {
+                  setErrorMessage(msg);
+                  onFailure();
+                });
   }
 
   function handleIriDownload(iriToDownload, onSuccess, onFailure, autoMap = false) {

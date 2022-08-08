@@ -18,8 +18,7 @@ export function parseStream(readableWebStream, onSuccess, onFailure) {
       });
     })
     .on("error", (error) => {
-      setErrorMessage(`Failed to parse given file: ${error}`);
-      onFailure();
+      onFailure(`Failed to parse given file: ${error}`);
     })
     .on("end", () => {
       onSuccess(triples);

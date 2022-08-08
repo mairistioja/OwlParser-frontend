@@ -7,6 +7,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { Clear, Edit, Restore } from "@mui/icons-material";
 import { srmClasses, srmRelations } from "../srm";
@@ -73,7 +74,7 @@ const SrmMappingPage = ({
 
   return (
     <>
-      <h1 style={{
+      <div style={{
         paddingLeft: "16px",
         paddingTop: "0.5rem",
         paddingBottom: "0.5rem",
@@ -82,7 +83,13 @@ const SrmMappingPage = ({
         backgroundColor: "white",
         zIndex: 10,
         boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
-        }}>{heading}</h1>
+      }}>
+        <h1 style={{margin:"0.3rem 0rem"}}>{heading}</h1>
+        <Typography variant="subtitle2" sx={{pl: "2rem", color:"#333"}}>Confirmation of SRM mappings is needed to
+          guarantee the correct output.
+          Individual mappings can be edited, deleted and restored to auto-detected mappings.
+        </Typography>
+      </div>
       <List dense={true} className="srmMappingList">
         {Object.entries(mapping)
           .sort(([lhsSrmId, lhsId], [rhsSrmId, rhsId]) => {
